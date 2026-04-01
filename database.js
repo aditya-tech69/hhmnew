@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const path = require('path');
 const fs = require('fs');
 
-const DB_PATH = path.join(__dirname, 'data', 'hhm.db');
+const DB_PATH = process.env.VERCEL ? '/tmp/hhm.db' : path.join(__dirname, 'data', 'hhm.db');
 let db = null;
 let SQL = null;
 
@@ -14,7 +14,7 @@ async function getDb() {
     SQL = await initSqlJs();
   }
 
-  const dataDir = path.join(__dirname, 'data');
+  const dataDir = process.env.VERCEL ? '/tmp' : path.join(__dirname, 'data');
   if (!fs.existsSync(dataDir)) {
     fs.mkdirSync(dataDir, { recursive: true });
   }
@@ -33,7 +33,7 @@ function saveDb() {
   if (db) {
     const data = db.export();
     const buffer = Buffer.from(data);
-    const dataDir = path.join(__dirname, 'data');
+    const dataDir = process.env.VERCEL ? '/tmp' : path.join(__dirname, 'data');
     if (!fs.existsSync(dataDir)) {
       fs.mkdirSync(dataDir, { recursive: true });
     }

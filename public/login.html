@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>HHM Innovation | Admin Login</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "secondary":"#765a26","outline-variant":"#cdc5bb","outline":"#7c766e","on-primary":"#ffffff","on-surface-variant":"#4b463f","background":"#faf9f7","primary":"#5f5e5e","surface":"#faf9f7","error":"#ba1a1a","on-surface":"#1a1c1b","surface-container-lowest":"#ffffff","on-secondary":"#ffffff","secondary-container":"#fed798"
+          },
+          fontFamily: { "headline": ["Noto Serif"], "body": ["Manrope"], "label": ["Manrope"] },
+        },
+      },
+    }
+  </script>
+  <link rel="stylesheet" href="/css/styles.css"/>
+</head>
+<body class="bg-background text-on-surface font-body min-h-screen flex items-center justify-center">
+
+<div class="w-full max-w-sm mx-auto p-8">
+  <div class="text-center mb-12">
+    <h1 class="text-3xl font-serif italic text-on-surface mb-2">HHM Admin</h1>
+    <p class="text-[10px] uppercase tracking-[0.3em] text-outline">Luxury Control Panel</p>
+  </div>
+  
+  <form id="login-form" class="space-y-6">
+    <div>
+      <label class="text-[10px] font-label uppercase tracking-widest text-outline mb-2 block">Username</label>
+      <input name="username" type="text" required class="w-full px-4 py-3 border border-outline-variant/40 bg-transparent text-sm outline-none focus:border-secondary transition-colors" placeholder="Enter username" />
+    </div>
+    <div>
+      <label class="text-[10px] font-label uppercase tracking-widest text-outline mb-2 block">Password</label>
+      <input name="password" type="password" required class="w-full px-4 py-3 border border-outline-variant/40 bg-transparent text-sm outline-none focus:border-secondary transition-colors" placeholder="Enter password" />
+    </div>
+    <div id="login-error" class="text-error text-sm hidden"></div>
+    <button type="submit" class="w-full bg-primary text-on-primary py-4 font-label tracking-widest uppercase text-sm hover:opacity-90 transition-all">
+      Sign In
+    </button>
+  </form>
+  
+  <div class="mt-8 text-center">
+    <a href="/" class="text-[10px] font-label uppercase tracking-widest text-outline hover:text-secondary transition-colors">← Back to Store</a>
+  </div>
+</div>
+
+<script>
+  document.getElementById('login-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const errorEl = document.getElementById('login-error');
+    const btn = form.querySelector('button');
+    
+    errorEl.classList.add('hidden');
+    btn.textContent = 'Signing in...';
+    btn.disabled = true;
+
+    try {
+      const res = await fetch('/api/admin/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          username: form.username.value,
+          password: form.password.value
+        })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Login failed');
+      window.location.href = '/admin';
+    } catch (err) {
+      errorEl.textContent = err.message;
+      errorEl.classList.remove('hidden');
+      btn.textContent = 'Sign In';
+      btn.disabled = false;
+    }
+  });
+
+  // Check if already logged in
+  fetch('/api/admin/me', { credentials: 'include' })
+    .then(r => { if (r.ok) window.location.href = '/admin'; });
+</script>
+</body>
+</html>

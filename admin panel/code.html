@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>HHM Innovation | Admin Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&amp;family=Manrope:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "inverse-on-surface": "#f1f1ef",
+              "on-secondary-fixed": "#271900",
+              "surface-dim": "#dadad8",
+              "on-error": "#ffffff",
+              "primary-fixed-dim": "#c8c6c5",
+              "inverse-surface": "#2f3130",
+              "secondary": "#765a26",
+              "outline-variant": "#cdc5bb",
+              "outline": "#7c766e",
+              "surface-variant": "#e3e2e0",
+              "secondary-fixed": "#ffdea9",
+              "secondary-fixed-dim": "#e6c184",
+              "on-tertiary": "#ffffff",
+              "surface-tint": "#5f5e5e",
+              "surface-container-high": "#e9e8e6",
+              "on-primary-fixed": "#1c1b1b",
+              "tertiary-fixed": "#e4e2df",
+              "on-error-container": "#93000a",
+              "on-primary": "#ffffff",
+              "error-container": "#ffdad6",
+              "on-surface-variant": "#4b463f",
+              "surface-container": "#efeeec",
+              "background": "#faf9f7",
+              "on-secondary-fixed-variant": "#5c4211",
+              "primary-fixed": "#e5e2e1",
+              "on-tertiary-fixed-variant": "#474745",
+              "tertiary-container": "#dddbd8",
+              "primary": "#5f5e5e",
+              "surface-container-low": "#f4f3f1",
+              "on-secondary-container": "#785c29",
+              "on-primary-container": "#60605f",
+              "primary-container": "#dddbda",
+              "surface": "#faf9f7",
+              "on-tertiary-fixed": "#1b1c1a",
+              "error": "#ba1a1a",
+              "on-background": "#1a1c1b",
+              "on-primary-fixed-variant": "#474746",
+              "tertiary-fixed-dim": "#c8c6c4",
+              "on-secondary": "#ffffff",
+              "tertiary": "#5f5e5c",
+              "on-surface": "#1a1c1b",
+              "surface-bright": "#faf9f7",
+              "surface-container-lowest": "#ffffff",
+              "surface-container-highest": "#e3e2e0",
+              "on-tertiary-container": "#60605e",
+              "inverse-primary": "#c8c6c5",
+              "secondary-container": "#fed798"
+            },
+            fontFamily: {
+              "headline": ["Noto Serif"],
+              "body": ["Manrope"],
+              "label": ["Manrope"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .specular-highlight {
+            box-shadow: inset 0 1px 0 0 rgba(229, 226, 225, 0.3);
+        }
+        .ambient-float {
+            box-shadow: 0 40px 60px -5px rgba(26, 28, 27, 0.05);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-secondary/20">
+<div class="flex min-h-screen">
+<!-- SideNavBar -->
+<aside class="bg-stone-50 dark:bg-stone-950 h-screen w-64 border-r border-stone-200/10 flex flex-col h-full py-6 px-4 fixed left-0 top-0 z-40">
+<div class="mb-10 px-4">
+<h1 class="text-lg font-serif italic text-stone-900 dark:text-stone-50">HHM Admin</h1>
+<p class="text-[10px] uppercase tracking-[0.2em] text-stone-500 mt-1">Luxury Control Panel</p>
+</div>
+<nav class="flex-1 space-y-1">
+<!-- Dashboard Active -->
+<a class="bg-stone-200/50 dark:bg-stone-800/50 text-stone-900 dark:text-stone-50 font-semibold group flex items-center px-4 py-3 text-sm transition-all duration-200 rounded-sm" href="#">
+<span class="material-symbols-outlined mr-3 text-stone-800" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+                    Dashboard
+                </a>
+<!-- Inventory -->
+<a class="text-stone-500 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-900 group flex items-center px-4 py-3 text-sm transition-all duration-200 hover:translate-x-1 rounded-sm" href="#">
+<span class="material-symbols-outlined mr-3">inventory_2</span>
+                    Inventory
+                </a>
+<!-- Sales -->
+<a class="text-stone-500 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-900 group flex items-center px-4 py-3 text-sm transition-all duration-200 hover:translate-x-1 rounded-sm" href="#">
+<span class="material-symbols-outlined mr-3">payments</span>
+                    Sales
+                </a>
+<!-- Analytics -->
+<a class="text-stone-500 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-900 group flex items-center px-4 py-3 text-sm transition-all duration-200 hover:translate-x-1 rounded-sm" href="#">
+<span class="material-symbols-outlined mr-3">leaderboard</span>
+                    Analytics
+                </a>
+<!-- Settings -->
+<a class="text-stone-500 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-900 group flex items-center px-4 py-3 text-sm transition-all duration-200 hover:translate-x-1 rounded-sm" href="#">
+<span class="material-symbols-outlined mr-3">settings</span>
+                    Settings
+                </a>
+</nav>
+<div class="mt-auto px-4 pt-4 border-t border-stone-200/10">
+<div class="flex items-center">
+<div class="w-8 h-8 bg-primary-container rounded-full flex items-center justify-center overflow-hidden">
+<img alt="Admin User Profile" class="object-cover" data-alt="close-up portrait of a professional man in a tailored dark suit against a neutral studio background, soft editorial lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLg-eT8B6OTtdTGmgq91eGCbFVyFNfPb9-nc2feaMQipae-UstYWSLGw9JScQtVL-aI1cq837RyWpR12e0wsODFUMgthnvT0I0XXGHjZBixwe6F-9B0xRgWhx2z2UDHq1FAlrJPqfvZgmkdXmWfoEViFGXomY7sJpVrtfNYwL-YU7CIqDFM85Te8Re9O6eYb5fMRY4cHI_jlGGCs4Pn2xWDSSIUVSezG5vhZGCgEOs0uoBZqREF4O08AodfqR_P4wXrLXEoPYgE-lH"/>
+</div>
+<div class="ml-3">
+<p class="text-xs font-semibold text-stone-900">Julian Voss</p>
+<p class="text-[10px] text-stone-500 uppercase">Principal Curator</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 ml-64 p-8">
+<!-- Top Header Action Bar -->
+<header class="flex justify-between items-end mb-12">
+<div>
+<h2 class="font-headline text-4xl font-bold tracking-tighter text-on-surface">Vitreous Overview</h2>
+<p class="font-body text-sm text-on-surface-variant mt-2 tracking-wide">Refining the landscape of luxury glassware management.</p>
+</div>
+<div class="flex gap-4 items-center">
+<button class="bg-surface-container-lowest glass-panel specular-highlight ambient-float px-6 py-2 text-xs font-label uppercase tracking-widest text-primary hover:opacity-80 transition-all rounded-sm">
+                        Export Report
+                    </button>
+<button class="bg-primary text-on-primary px-6 py-2 text-xs font-label uppercase tracking-widest shadow-lg shadow-primary/20 hover:opacity-90 transition-all rounded-sm">
+                        New Acquisition
+                    </button>
+</div>
+</header>
+<!-- Key Metrics Bento Grid -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+<!-- Total Sales -->
+<div class="bg-surface-container-lowest p-8 rounded-sm ambient-float specular-highlight relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl">query_stats</span>
+</div>
+<p class="text-[10px] font-label uppercase tracking-[0.3em] text-secondary mb-4">Gross Revenue</p>
+<h3 class="font-headline text-3xl font-bold text-on-surface">$128,450.00</h3>
+<div class="mt-4 flex items-center text-[10px] font-label text-emerald-600">
+<span class="material-symbols-outlined text-xs mr-1">trending_up</span>
+                        +14.2% FROM LAST QUARTER
+                    </div>
+</div>
+<!-- New Orders -->
+<div class="bg-surface-container-lowest p-8 rounded-sm ambient-float specular-highlight relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl">shopping_cart</span>
+</div>
+<p class="text-[10px] font-label uppercase tracking-[0.3em] text-secondary mb-4">Active Commissions</p>
+<h3 class="font-headline text-3xl font-bold text-on-surface">42</h3>
+<div class="mt-4 flex items-center text-[10px] font-label text-amber-600">
+<span class="material-symbols-outlined text-xs mr-1">pending</span>
+                        12 AWAITING FINAL POLISH
+                    </div>
+</div>
+<!-- Inventory Value -->
+<div class="bg-surface-container-lowest p-8 rounded-sm ambient-float specular-highlight relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl">diamond</span>
+</div>
+<p class="text-[10px] font-label uppercase tracking-[0.3em] text-secondary mb-4">Vault Inventory</p>
+<h3 class="font-headline text-3xl font-bold text-on-surface">1,204 <span class="text-lg font-light text-on-surface-variant">Units</span></h3>
+<div class="mt-4 flex items-center text-[10px] font-label text-on-surface-variant">
+<span class="material-symbols-outlined text-xs mr-1">check_circle</span>
+                        98% STOCK INTEGRITY
+                    </div>
+</div>
+</section>
+<!-- Main Dashboard Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- Recent Orders Table -->
+<div class="lg:col-span-2 bg-surface-container-low rounded-sm p-1">
+<div class="bg-surface-container-lowest p-8 rounded-sm h-full">
+<div class="flex justify-between items-center mb-8">
+<h4 class="font-headline text-xl font-bold tracking-tight">Recent Acquisitions</h4>
+<a class="text-[10px] font-label uppercase tracking-widest text-secondary hover:underline" href="#">View All Registry</a>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-outline-variant/20">
+<th class="pb-4 text-[10px] font-label uppercase tracking-widest text-on-surface-variant">Collection</th>
+<th class="pb-4 text-[10px] font-label uppercase tracking-widest text-on-surface-variant">Recipient</th>
+<th class="pb-4 text-[10px] font-label uppercase tracking-widest text-on-surface-variant">Status</th>
+<th class="pb-4 text-[10px] font-label uppercase tracking-widest text-on-surface-variant text-right">Value</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10">
+<tr class="group hover:bg-surface-container-low transition-colors">
+<td class="py-4">
+<div class="flex items-center">
+<div class="w-10 h-10 bg-primary-container/30 overflow-hidden flex items-center justify-center">
+<img alt="Glassware" class="object-cover" data-alt="macro photo of a minimalist hand-blown crystal wine glass with a thin stem on a reflective white surface" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB88zqEKZwFEbg99IRJLymj6cHhAsq7pn0weEq2JxRvIv724hsFZbzIUIBHoeeqRbOmIGSwdplK7mRC9NCjyQiWhJK6NVtADL_k6U1rfE5e7Nntoz0y07OPEq4yL6nX776YCvJJupVK91RGLgt2rKE1bK0N6TGN-IAvcUY4YFpPeRQsa8OLTK8R360NyxLy6ZXXrlM6gjX93b7NsSsfAfzHdPEQQe5lLPSs5-hZVgEgru5eFGiw_hP2RX0Ci5wubt7XmuvttKKaJfGQ"/>
+</div>
+<span class="ml-3 font-body font-medium text-sm">Prism Decanter Set</span>
+</div>
+</td>
+<td class="py-4 text-sm text-on-surface-variant">A. Sterling</td>
+<td class="py-4">
+<span class="inline-block px-2 py-1 text-[9px] font-label tracking-widest uppercase bg-emerald-50 text-emerald-700">Fulfilled</span>
+</td>
+<td class="py-4 text-sm font-semibold text-right">$2,400.00</td>
+</tr>
+<tr class="group hover:bg-surface-container-low transition-colors">
+<td class="py-4">
+<div class="flex items-center">
+<div class="w-10 h-10 bg-primary-container/30 overflow-hidden flex items-center justify-center">
+<img alt="Ceramics" class="object-cover" data-alt="top-down view of organic shaped ceramic plates in muted stone grey tones stacked on a light oak table" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-LGv4OvdtR4kwheaG3dXKCfHBpFskjs7P0f0Y5i3ylEp1IuhM07G0DEGo2NyGZtH91nbifRtGKLfWR6SASHzhWvmQR1vHpVq6FIkJze25RUASGF2M5xtVQMO8FHN6-j_VtEseXuuGWk6UXRdmCRhWyFssjcfRIuKlW-MED5f-4hgGpcS8ReruxaAIqOMQCa7Z2vaK0bwHADmOruZ-rK_nIZ2hAo0y8u_Es8RR54JDOHfQMaD-cZ97mrsnPhEKybgjX29nuWgLiBWN"/>
+</div>
+<span class="ml-3 font-body font-medium text-sm">Basalt Ceramic Suite</span>
+</div>
+</td>
+<td class="py-4 text-sm text-on-surface-variant">E. Beaumont</td>
+<td class="py-4">
+<span class="inline-block px-2 py-1 text-[9px] font-label tracking-widest uppercase bg-amber-50 text-amber-700">In Transit</span>
+</td>
+<td class="py-4 text-sm font-semibold text-right">$1,850.00</td>
+</tr>
+<tr class="group hover:bg-surface-container-low transition-colors">
+<td class="py-4">
+<div class="flex items-center">
+<div class="w-10 h-10 bg-primary-container/30 overflow-hidden flex items-center justify-center">
+<img alt="Artisan Glass" class="object-cover" data-alt="abstract close-up of light refracting through amber colored artisanal glass with subtle bubbles and texture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCq7TTIszTs73rl4y1O8eB8wg1Ybf6VBtQINHPfG7a9yl8ePzKDLR_1jYr4dCvIjZMfWwUlDL-OO6_gWHkbngNOZk6Rdagub4m8LMmHAgVzzu3zF3NRP0oQeZy2gF4HL7VDvauG4NJOmxo-GK6P-2lMk4AJLkdgCYeZinlUXh61zaauFWG0pRbW7q5vH63jfJbA_-VAxWo_gCNUvMor67-Szxdm2SEAc93RMz8jJ5wy-dECQahvHz9_gQvaoLsAozAZuuYID9mB3fpr"/>
+</div>
+<span class="ml-3 font-body font-medium text-sm">Obsidian Flutes (x12)</span>
+</div>
+</td>
+<td class="py-4 text-sm text-on-surface-variant">S. Rothschild</td>
+<td class="py-4">
+<span class="inline-block px-2 py-1 text-[9px] font-label tracking-widest uppercase bg-stone-100 text-stone-600">Processing</span>
+</td>
+<td class="py-4 text-sm font-semibold text-right">$4,100.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- Inventory Status Visualization -->
+<div class="bg-surface-container-lowest p-8 rounded-sm ambient-float specular-highlight flex flex-col">
+<h4 class="font-headline text-xl font-bold tracking-tight mb-8">Inventory Refraction</h4>
+<div class="flex-1 space-y-8">
+<div>
+<div class="flex justify-between items-end mb-2">
+<p class="text-[10px] font-label uppercase tracking-widest text-on-surface-variant">Mouth-Blown Glass</p>
+<p class="text-xs font-semibold">82%</p>
+</div>
+<div class="h-1 w-full bg-surface-container-high overflow-hidden">
+<div class="h-full bg-secondary transition-all w-[82%]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between items-end mb-2">
+<p class="text-[10px] font-label uppercase tracking-widest text-on-surface-variant">Artisanal Ceramics</p>
+<p class="text-xs font-semibold">45%</p>
+</div>
+<div class="h-1 w-full bg-surface-container-high overflow-hidden">
+<div class="h-full bg-primary transition-all w-[45%]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between items-end mb-2">
+<p class="text-[10px] font-label uppercase tracking-widest text-on-surface-variant">Bespeak Commissions</p>
+<p class="text-xs font-semibold">94%</p>
+</div>
+<div class="h-1 w-full bg-surface-container-high overflow-hidden">
+<div class="h-full bg-on-surface transition-all w-[94%]"></div>
+</div>
+</div>
+<!-- Mini Chart Placeholder Area -->
+<div class="mt-auto pt-8 border-t border-outline-variant/15">
+<div class="flex items-end justify-between h-24 gap-1">
+<div class="w-full bg-surface-container-high h-[40%]"></div>
+<div class="w-full bg-surface-container-high h-[60%]"></div>
+<div class="w-full bg-surface-container-high h-[35%]"></div>
+<div class="w-full bg-secondary h-[85%]"></div>
+<div class="w-full bg-surface-container-high h-[50%]"></div>
+<div class="w-full bg-surface-container-high h-[70%]"></div>
+<div class="w-full bg-primary h-[95%]"></div>
+</div>
+<p class="text-[9px] font-label uppercase text-center mt-4 tracking-[0.2em] text-on-surface-variant">7-Day Yield Variance</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Global Footer -->
+<footer class="mt-20 py-8 border-t border-stone-200/10 flex justify-between items-center">
+<p class="text-[9px] font-label uppercase tracking-widest text-stone-400">© 2024 HHM Innovation. Refracted Luxury.</p>
+<div class="flex gap-6">
+<a class="text-[9px] font-label uppercase tracking-widest text-stone-500 hover:text-stone-800 transition-colors" href="#">Privacy Policy</a>
+<a class="text-[9px] font-label uppercase tracking-widest text-stone-500 hover:text-stone-800 transition-colors" href="#">Terms of Service</a>
+</div>
+</footer>
+</main>
+</div>
+<!-- The Specimen Modal (Preview Only) -->
+<div class="hidden fixed inset-0 z-[100] flex items-center justify-center" id="quick-look-modal">
+<div class="absolute inset-0 bg-white/80 backdrop-blur-2xl"></div>
+<div class="relative z-10 w-full max-w-4xl p-8 flex gap-12 items-center">
+<div class="w-1/2 aspect-square ambient-float bg-surface shadow-2xl rounded-sm overflow-hidden">
+<img alt="Premium Glass" class="w-full h-full object-cover" data-alt="minimalist studio photography of a heavy base whisky glass with intricate crystal cuts, glowing softly under warm spotlights on a dark stone surface" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDobsWRx4WkOGdJrddHhKweZmaaqY5kH1eWvjlnFM-aKdDIRVemdmAcMmPf12hwUQGsMgBDz3xF2Us0A1BFnGqcX7XvzSEpH9jkqczZ-BSjgG159kAmNDCrsbJs008b5Rp_FbUzC1LgWvBep3Pdds6l1PtinJaQp_28Kl9xO2Sc1qEzFbGnkr6uH5anjUECtS-iwESp-TFR0EuffPZNbvWORxMbZe-ZSdJdjsTqFapV15JZQJdPn7OmXg1jiHW1xs96QR7kzzN267Lo"/>
+</div>
+<div class="w-1/2">
+<p class="text-xs font-label text-secondary uppercase tracking-[0.3em] mb-4">Registry Item #0921</p>
+<h2 class="font-headline text-5xl font-bold tracking-tighter mb-6">Monolith Crystal Tumbler</h2>
+<div class="space-y-4 mb-8">
+<p class="text-sm font-body text-on-surface-variant leading-relaxed">A testament to structural clarity. Each Monolith is hand-etched over a period of 14 hours by master artisans in our Northern workshop.</p>
+<div class="flex items-center gap-8 py-4 border-y border-outline-variant/20">
+<div>
+<p class="text-[9px] font-label uppercase tracking-widest text-on-surface-variant">Stock Level</p>
+<p class="text-lg font-body font-semibold">12 Available</p>
+</div>
+<div>
+<p class="text-[9px] font-label uppercase tracking-widest text-on-surface-variant">Unit Price</p>
+<p class="text-lg font-body font-semibold text-secondary">$340.00</p>
+</div>
+</div>
+</div>
+<div class="flex gap-4">
+<button class="bg-primary text-on-primary px-8 py-3 text-xs font-label uppercase tracking-widest rounded-sm">Update Inventory</button>
+<button class="border border-outline-variant px-8 py-3 text-xs font-label uppercase tracking-widest rounded-sm">Dismiss</button>
+</div>
+</div>
+</div>
+</div>
+</body></html>

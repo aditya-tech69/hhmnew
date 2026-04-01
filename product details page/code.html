@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&amp;family=Manrope:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "inverse-on-surface": "#f1f1ef",
+              "on-secondary-fixed": "#271900",
+              "surface-dim": "#dadad8",
+              "on-error": "#ffffff",
+              "primary-fixed-dim": "#c8c6c5",
+              "inverse-surface": "#2f3130",
+              "secondary": "#765a26",
+              "outline-variant": "#cdc5bb",
+              "outline": "#7c766e",
+              "surface-variant": "#e3e2e0",
+              "secondary-fixed": "#ffdea9",
+              "secondary-fixed-dim": "#e6c184",
+              "on-tertiary": "#ffffff",
+              "surface-tint": "#5f5e5e",
+              "surface-container-high": "#e9e8e6",
+              "on-primary-fixed": "#1c1b1b",
+              "tertiary-fixed": "#e4e2df",
+              "on-error-container": "#93000a",
+              "on-primary": "#ffffff",
+              "error-container": "#ffdad6",
+              "on-surface-variant": "#4b463f",
+              "surface-container": "#efeeec",
+              "background": "#faf9f7",
+              "on-secondary-fixed-variant": "#5c4211",
+              "primary-fixed": "#e5e2e1",
+              "on-tertiary-fixed-variant": "#474745",
+              "tertiary-container": "#dddbd8",
+              "primary": "#5f5e5e",
+              "surface-container-low": "#f4f3f1",
+              "on-secondary-container": "#785c29",
+              "on-primary-container": "#60605f",
+              "primary-container": "#dddbda",
+              "surface": "#faf9f7",
+              "on-tertiary-fixed": "#1b1c1a",
+              "error": "#ba1a1a",
+              "on-background": "#1a1c1b",
+              "on-primary-fixed-variant": "#474746",
+              "tertiary-fixed-dim": "#c8c6c4",
+              "on-secondary": "#ffffff",
+              "tertiary": "#5f5e5c",
+              "on-surface": "#1a1c1b",
+              "surface-bright": "#faf9f7",
+              "surface-container-lowest": "#ffffff",
+              "surface-container-highest": "#e3e2e0",
+              "on-tertiary-container": "#60605e",
+              "inverse-primary": "#c8c6c5",
+              "secondary-container": "#fed798"
+            },
+            fontFamily: {
+              "headline": ["Noto Serif"],
+              "body": ["Manrope"],
+              "label": ["Manrope"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+      .glass-card {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+      }
+      .specular-highlight {
+        border-top: 1px solid rgba(229, 226, 225, 0.3);
+      }
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+      }
+      .custom-transition {
+        transition: all 600ms cubic-bezier(0.2, 0, 0, 1);
+      }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-secondary-container selection:text-on-secondary-container">
+<!-- Top Navigation Bar -->
+<nav class="fixed top-0 w-full z-50 border-b border-stone-200/15 bg-white/70 backdrop-blur-xl flex justify-between items-center px-8 h-20 w-full">
+<div class="text-2xl font-headline tracking-tighter text-stone-800">HHM Innovation</div>
+<div class="hidden md:flex gap-10">
+<a class="text-stone-500 hover:text-stone-800 transition-colors text-sm tracking-wide uppercase font-label" href="#">Collections</a>
+<a class="text-stone-900 border-b border-stone-800 pb-1 text-sm tracking-wide uppercase font-label" href="#">Glassware</a>
+<a class="text-stone-500 hover:text-stone-800 transition-colors text-sm tracking-wide uppercase font-label" href="#">Ceramics</a>
+<a class="text-stone-500 hover:text-stone-800 transition-colors text-sm tracking-wide uppercase font-label" href="#">Bespeak</a>
+</div>
+<div class="flex items-center gap-6">
+<button class="text-stone-700 hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined">search</span>
+</button>
+<button class="text-stone-700 hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined">shopping_bag</span>
+</button>
+</div>
+</nav>
+<main class="pt-20">
+<!-- Hero Section: The Specimen View -->
+<section class="relative min-h-screen flex flex-col md:flex-row items-center px-8 md:px-20 py-12 gap-12 overflow-hidden">
+<!-- Background Decoration -->
+<div class="absolute top-1/4 -left-20 w-96 h-96 bg-secondary/5 rounded-full blur-3xl -z-10"></div>
+<div class="absolute bottom-1/4 -right-20 w-80 h-80 bg-primary/5 rounded-full blur-3xl -z-10"></div>
+<!-- Left: Floating Product Imagery -->
+<div class="w-full md:w-3/5 relative flex justify-center items-center">
+<div class="glass-card specular-highlight w-full aspect-square md:aspect-[4/5] rounded-xl flex items-center justify-center p-8 shadow-[0_40px_60px_-5px_rgba(26,28,27,0.04)]">
+<img class="max-h-full max-w-full object-contain custom-transition hover:scale-105 drop-shadow-2xl" data-alt="Stunning professional photograph of a sculptural hand-blown glass decanter, crystal clear with intricate prismatic reflections, floating against a soft neutral studio background with minimal shadows" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDzC7TsuYNTrVk3_Mfr3UHgYEXDbfs9wBgglalm1SSYu1C1YxidhqE-FhoUDwlWU8hAdEhEfl9-i53p3aM-4Qg9YGEuYaDvRpOwJubeAxpheLMfGcHZOvKk6iFtaJo8VGdoNDcGqXJ3j25kGQezAMfcF9D6pyJWcowdUsKyX_uG3ZNfT4qyhidNen0LnAXBVN448GUQtnGcJNk9O_Mngkpxe_5ExmpWk_Dl2hApAEFTBztzaJO-a-5tp6mBACbbrd8zxCp_hHxFf_mw"/>
+</div>
+</div>
+<!-- Right: Product Details -->
+<div class="w-full md:w-2/5 flex flex-col space-y-8">
+<nav class="flex gap-2 text-[10px] tracking-widest uppercase text-outline font-label">
+<span>Glassware</span>
+<span>/</span>
+<span>Refractions Series</span>
+</nav>
+<header>
+<h1 class="font-headline text-5xl md:text-7xl text-on-surface tracking-tighter leading-tight mb-4">The Aurelius Decanter</h1>
+<p class="text-secondary font-medium tracking-wide text-lg">€480.00</p>
+</header>
+<div class="space-y-4">
+<p class="text-on-surface-variant font-body leading-relaxed text-lg">
+                        Designed with mathematical precision, the Aurelius features an asymmetric prismatic base that refracts light across your table, turning the act of pouring into a sensory performance. 
+                    </p>
+</div>
+<div class="bg-surface-container-low p-6 rounded-sm space-y-4">
+<div class="flex justify-between items-center border-b border-outline-variant/20 pb-3">
+<span class="text-[10px] font-label uppercase tracking-widest text-outline">Material</span>
+<span class="text-sm font-medium">Borosilicate Crystal</span>
+</div>
+<div class="flex justify-between items-center border-b border-outline-variant/20 pb-3">
+<span class="text-[10px] font-label uppercase tracking-widest text-outline">Capacity</span>
+<span class="text-sm font-medium">750ml</span>
+</div>
+<div class="flex justify-between items-center pb-1">
+<span class="text-[10px] font-label uppercase tracking-widest text-outline">Origin</span>
+<span class="text-sm font-medium">Venetian Atelier</span>
+</div>
+</div>
+<div class="pt-6">
+<button class="w-full bg-primary text-on-primary py-5 rounded-sm font-label tracking-widest uppercase text-sm hover:opacity-90 transition-all flex justify-center items-center gap-3">
+                        Add to Bag
+                        <span class="material-symbols-outlined text-lg">arrow_forward</span>
+</button>
+<p class="text-center mt-4 text-[10px] text-outline tracking-widest uppercase">Complimentary white-glove shipping on all orders</p>
+</div>
+</div>
+</section>
+<!-- Technical Specification Grid -->
+<section class="bg-surface-container py-24 px-8 md:px-20">
+<div class="max-w-7xl mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-16">
+<div class="space-y-4">
+<span class="material-symbols-outlined text-secondary text-3xl">flare</span>
+<h3 class="font-headline text-xl">Light Refraction</h3>
+<p class="text-on-surface-variant text-sm leading-relaxed">The unique geometric angles are calculated to maximize the brilliance of the spirits held within, casting spectrums across any surface.</p>
+</div>
+<div class="space-y-4">
+<span class="material-symbols-outlined text-secondary text-3xl">science</span>
+<h3 class="font-headline text-xl">Thermal Resistance</h3>
+<p class="text-on-surface-variant text-sm leading-relaxed">Crafted from laboratory-grade crystal, the Aurelius is resistant to thermal shock, ensuring longevity through generations of use.</p>
+</div>
+<div class="space-y-4">
+<span class="material-symbols-outlined text-secondary text-3xl">handyman</span>
+<h3 class="font-headline text-xl">Artisan Blown</h3>
+<p class="text-on-surface-variant text-sm leading-relaxed">Each piece is individually mouth-blown by a single master artisan, resulting in a unique crystalline fingerprint for every decanter.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- "You May Also Like" Carousel/Grid -->
+<section class="py-24 px-8 md:px-20 max-w-7xl mx-auto">
+<div class="flex justify-between items-end mb-12">
+<div>
+<span class="text-[10px] font-label uppercase tracking-widest text-outline mb-2 block">Curated Pairings</span>
+<h2 class="font-headline text-3xl md:text-4xl">Complete the Set</h2>
+</div>
+<div class="flex gap-4">
+<button class="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined">west</span>
+</button>
+<button class="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined">east</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+<!-- Product 1 -->
+<div class="group cursor-pointer">
+<div class="aspect-[3/4] bg-surface-container-low flex items-center justify-center p-12 transition-transform duration-500 group-hover:-translate-y-2">
+<img class="max-h-full object-contain" data-alt="Set of two minimalist matching crystal tumblers with heavy weighted bases, clean lines, professional luxury catalog style on light grey" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDbNqiNIGIIuk8dAAdUslxhC--kIZyWiu5eyT4g3rmX3FlxIuzYQNLJuWNmZAmsSMvCqKuc0GpcGlnk4mJYE16oz6E32s6fSgRKYzDYRj3Y4FxXflMPixuIIYWU88_RlWr1Le_dlgRlq5cV8R7gZNhKQ7Bv7V1Y_if5kxcfxCMMJQ7e9_n6ta-iGmflkw3-TWcd-nImJJfKdcUjkZJBWKJCV12axT2GCPuXp8SHJKsnfX6eopXqh_d7igrcWccGR8403p_nefwlMkMC"/>
+</div>
+<div class="mt-6 flex justify-between items-start">
+<div>
+<h4 class="font-headline text-lg group-hover:text-secondary transition-colors">Aurelius Tumblers (Set of 2)</h4>
+<p class="text-outline text-xs uppercase tracking-widest mt-1">Glassware</p>
+</div>
+<p class="text-sm font-medium">€180.00</p>
+</div>
+</div>
+<!-- Product 2 -->
+<div class="group cursor-pointer">
+<div class="aspect-[3/4] bg-surface-container-low flex items-center justify-center p-12 transition-transform duration-500 group-hover:-translate-y-2">
+<img class="max-h-full object-contain" data-alt="Elegant circular travertine serving tray with subtle natural stone textures and matte finish, minimalist luxury homeware photography" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkCkmpU72Tfqd7EmCE_q0inKDtfOdpBI_AG4mzXFPvkU2QSCEubUg_5eHPMrvNJ_qzpLrTt5CwctXTvawWILPXX_OT4WMCHjkgUtB8KeltQNn8Bu8B2MJReViuBrI_GBfiucoRO8xv7bGeMFAb0_c7TTcSSc77CewLfBaYOUvryPnkPWINOTiFkUyKcG-o9a7llGEm_mqqpM5yUTCO8fBjOWP8ydK3Q2exNoSi-4tdDlPrvPyRquzwUpcJEPYpX5BbAE5IsK-gNMws"/>
+</div>
+<div class="mt-6 flex justify-between items-start">
+<div>
+<h4 class="font-headline text-lg group-hover:text-secondary transition-colors">Travertine Plinth Tray</h4>
+<p class="text-outline text-xs uppercase tracking-widest mt-1">Accessories</p>
+</div>
+<p class="text-sm font-medium">€320.00</p>
+</div>
+</div>
+<!-- Product 3 -->
+<div class="group cursor-pointer">
+<div class="aspect-[3/4] bg-surface-container-low flex items-center justify-center p-12 transition-transform duration-500 group-hover:-translate-y-2">
+<img class="max-h-full object-contain" data-alt="Modern sculptural glass wine aerator accessory with organic flowing curves, clear glass with sharp reflections" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPIAjfSvvzSEDkuhC4XSIzkuZ6vp3UqmEaBsgQK1AcQ-dobHVble_0jL0yYv9CbPg0KTpeMB28FxPT3q2-X0ihU35DCovU5CaSn_nkvTnQ8VKjbQmxaLMXgxx56Ien3XBY5UwImde_JYtcP-TMRAAcqeA9bp9AjGxlk__hVuFRM4S0Cvpj30bfohFTMGsP9AhTi6HFIkwCqE4CKsJOR7Dp1YGNwKv5InJgzBQk73Vzq51LsGHCDEellY7jj8t5ouG6HXy4qrEafG-9"/>
+</div>
+<div class="mt-6 flex justify-between items-start">
+<div>
+<h4 class="font-headline text-lg group-hover:text-secondary transition-colors">Helix Aerator</h4>
+<p class="text-outline text-xs uppercase tracking-widest mt-1">Glassware</p>
+</div>
+<p class="text-sm font-medium">€110.00</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-stone-100 py-12 border-t border-stone-200/10">
+<div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center px-8">
+<div class="text-stone-600 font-label text-[10px] tracking-widest uppercase order-2 md:order-1 mt-8 md:mt-0">
+                © 2024 HHM Innovation. Refracted Luxury.
+            </div>
+<div class="flex gap-8 order-1 md:order-2">
+<a class="text-stone-500 hover:underline decoration-stone-300 underline-offset-4 font-label text-[10px] tracking-widest uppercase" href="#">Privacy Policy</a>
+<a class="text-stone-500 hover:underline decoration-stone-300 underline-offset-4 font-label text-[10px] tracking-widest uppercase" href="#">Terms of Service</a>
+<a class="text-stone-500 hover:underline decoration-stone-300 underline-offset-4 font-label text-[10px] tracking-widest uppercase" href="#">Shipping</a>
+<a class="text-stone-500 hover:underline decoration-stone-300 underline-offset-4 font-label text-[10px] tracking-widest uppercase" href="#">Returns</a>
+</div>
+</div>
+</footer>
+</body></html>

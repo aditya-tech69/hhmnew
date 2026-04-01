@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Contact Us | HHM Innovation</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "secondary":"#765a26",
+            "outline-variant":"#cdc5bb",
+            "surface-variant":"#e3e2e0",
+            "primary":"#5f5e5e",
+            "background":"#faf9f7",
+            "surface":"#faf9f7",
+            "surface-container-low":"#f4f3f1",
+            "on-surface":"#1a1c1b",
+            "on-background":"#1a1c1b",
+            "on-surface-variant":"#4b463f",
+          },
+          fontFamily: { "headline": ["Noto Serif"], "body": ["Manrope"], "label": ["Manrope"] },
+          borderRadius: {"DEFAULT":"0.125rem","sm":"0.125rem","lg":"0.25rem","xl":"0.5rem","full":"0.75rem"},
+        },
+      },
+    }
+  </script>
+  <link rel="stylesheet" href="/css/styles.css"/>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-secondary/20">
+
+<!-- Top Navigation -->
+<nav class="fixed top-0 w-full z-50 border-b border-stone-200/15 bg-white/70 glass-nav flex justify-between items-center px-8 h-20">
+  <a href="/" class="text-2xl font-headline tracking-tighter text-stone-800 italic no-underline">HHM Innovation</a>
+  <div class="hidden md:flex gap-10">
+    <a class="text-stone-500 hover:text-stone-800 transition-colors text-sm tracking-wide uppercase font-label" href="/">Home</a>
+    <a class="text-stone-500 hover:text-stone-800 transition-colors text-sm tracking-wide uppercase font-label" href="/catalog">Collections</a>
+    <a class="text-stone-500 hover:text-stone-800 transition-colors text-sm tracking-wide uppercase font-label" href="/catalog?category=Glassware">Glassware</a>
+    <a class="text-stone-500 hover:text-stone-800 transition-colors text-sm tracking-wide uppercase font-label" href="/catalog?category=Ceramics">Ceramics</a>
+    <a class="text-stone-500 hover:text-stone-800 transition-colors text-sm tracking-wide uppercase font-label" href="/catalog?category=Bespeak">Bespeak</a>
+    <a class="text-stone-900 border-b border-stone-800 pb-1 text-sm tracking-wide uppercase font-label" href="/contact">Contact Us</a>
+  </div>
+  <div class="flex items-center gap-6">
+    <a href="/catalog" class="text-stone-700 hover:opacity-80 transition-opacity">
+      <span class="material-symbols-outlined">search</span>
+    </a>
+    <button class="text-stone-700 hover:opacity-80 transition-opacity relative cart-trigger">
+      <span class="material-symbols-outlined">shopping_bag</span>
+      <span class="cart-badge absolute -top-1 -right-1 w-4 h-4 bg-secondary text-white text-[10px] rounded-full flex items-center justify-center" style="display:none;">0</span>
+    </button>
+  </div>
+</nav>
+
+<main class="pt-32 pb-24 px-8 min-h-screen relative">
+  <div class="max-w-7xl mx-auto flex flex-col md:flex-row gap-20">
+    
+    <!-- Left Column: Details -->
+    <div class="md:w-1/2 flex flex-col justify-center">
+      <span class="font-label text-xs tracking-[0.4em] uppercase text-secondary mb-4 block">Visit The Atelier</span>
+      <h1 class="font-headline text-5xl md:text-6xl tracking-tight leading-[1.1] mb-8 text-on-surface">Experience <br/><span class="italic font-light">Refracted Luxury.</span></h1>
+      
+      <div class="font-body text-on-surface-variant space-y-8 mt-4">
+        <div>
+          <h2 class="text-xl font-headline text-on-surface mb-2">Location</h2>
+          <p class="leading-relaxed">G-74, SPAZE BOULEVARD<br/>SECTOR-47, SOHNA ROAD<br/>GURUGRAM</p>
+        </div>
+        
+        <div class="pt-8 border-t border-outline-variant/30">
+          <h2 class="text-xl font-headline text-on-surface mb-4">Direct Communication</h2>
+          <div class="flex items-center gap-4 mb-3">
+            <span class="material-symbols-outlined text-stone-400">person</span>
+            <div>
+              <p class="text-sm font-label uppercase tracking-widest text-stone-500">Owner</p>
+              <p class="font-medium text-on-surface text-lg">Sanjay</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-4 mb-3">
+            <span class="material-symbols-outlined text-stone-400">call</span>
+            <div>
+              <p class="text-sm font-label uppercase tracking-widest text-stone-500">Contact Number</p>
+              <p class="font-medium text-on-surface text-lg">9811850877</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-4">
+            <span class="material-symbols-outlined text-stone-400">mail</span>
+            <div>
+              <p class="text-sm font-label uppercase tracking-widest text-stone-500">Email Address</p>
+              <p class="font-medium text-on-surface text-lg lowercase">sanjaygm3@gmail.com</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column: Image and Map -->
+    <div class="md:w-1/2 relative">
+      <div class="absolute -top-10 -right-10 w-64 h-64 bg-secondary/5 rounded-full blur-3xl z-0"></div>
+      <!-- Shop image container -->
+      <div class="relative z-10 rounded-sm overflow-hidden bg-surface-container-low shadow-2xl glass-highlight border border-outline-variant/20 aspect-[4/5]">
+        <img class="w-full h-full object-cover grayscale-[20%] hover:grayscale-0 transition-all duration-700" alt="HHM Innovation Shop Location" src="/images/shop.jpg" onerror="this.src='https://lh3.googleusercontent.com/aida-public/AB6AXuBeJAWQEUbaVvmadp-ZWdze_uIUUnh4pH1LwxoLxDw6TDMD0zQKyC-Wyxm6SvEhdevQ_sxsaFhtcMMwm6fizswh0uFauuLgMw6CjHs8Yhg3SnGR0yfERKUothnjlqnrr46ZCJjsO2h8OAr5ZlNSPTmVHu2nfBjGLiMhJR1RGOnzstoZrXfq1QoJNC15tbVCoXHwgOugzwQye6-ym6yEsCQhhc8CR-QoNrv2oEVuigaVP8wlgwZpHuN6fFRPBfhikVFA1SPd3ge3m_DC'" />
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- Footer -->
+<footer class="bg-stone-100 py-12 border-t border-stone-200/10 mt-auto">
+  <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center px-8">
+    <div class="text-stone-600 font-label text-[10px] tracking-widest uppercase">
+      © 2024 HHM Innovation. Refracted Luxury.
+    </div>
+  </div>
+</footer>
+
+<script src="/js/app.js"></script>
+</body>
+</html>

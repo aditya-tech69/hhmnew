@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Product | HHM Innovation</title>
+  <meta name="description" content="Explore this exquisite piece from HHM Innovation's luxury collection.">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "inverse-on-surface":"#f1f1ef","on-secondary-fixed":"#271900","surface-dim":"#dadad8","on-error":"#ffffff","primary-fixed-dim":"#c8c6c5","inverse-surface":"#2f3130","secondary":"#765a26","outline-variant":"#cdc5bb","outline":"#7c766e","surface-variant":"#e3e2e0","secondary-fixed":"#ffdea9","secondary-fixed-dim":"#e6c184","on-tertiary":"#ffffff","surface-tint":"#5f5e5e","surface-container-high":"#e9e8e6","on-primary-fixed":"#1c1b1b","tertiary-fixed":"#e4e2df","on-error-container":"#93000a","on-primary":"#ffffff","error-container":"#ffdad6","on-surface-variant":"#4b463f","surface-container":"#efeeec","background":"#faf9f7","on-secondary-fixed-variant":"#5c4211","primary-fixed":"#e5e2e1","on-tertiary-fixed-variant":"#474745","tertiary-container":"#dddbd8","primary":"#5f5e5e","surface-container-low":"#f4f3f1","on-secondary-container":"#785c29","on-primary-container":"#60605f","primary-container":"#dddbda","surface":"#faf9f7","on-tertiary-fixed":"#1b1c1a","error":"#ba1a1a","on-background":"#1a1c1b","on-primary-fixed-variant":"#474746","tertiary-fixed-dim":"#c8c6c4","on-secondary":"#ffffff","tertiary":"#5f5e5c","on-surface":"#1a1c1b","surface-bright":"#faf9f7","surface-container-lowest":"#ffffff","surface-container-highest":"#e3e2e0","on-tertiary-container":"#60605e","inverse-primary":"#c8c6c5","secondary-container":"#fed798"
+          },
+          fontFamily: { "headline": ["Noto Serif"], "body": ["Manrope"], "label": ["Manrope"] },
+          borderRadius: {"DEFAULT":"0.125rem","lg":"0.25rem","xl":"0.5rem","full":"0.75rem"},
+        },
+      },
+    }
+  </script>
+  <link rel="stylesheet" href="/css/styles.css"/>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-secondary-container selection:text-on-secondary-container">
+
+<!-- Top Navigation -->
+<nav class="fixed top-0 w-full z-50 border-b border-stone-200/15 bg-white/70 glass-nav flex justify-between items-center px-8 h-20">
+  <a href="/" class="text-2xl font-headline tracking-tighter text-stone-800 italic no-underline">HHM Innovation</a>
+  <div class="hidden md:flex gap-10">
+    <a class="text-stone-500 hover:text-stone-800 transition-colors text-sm tracking-wide uppercase font-label" href="/">Home</a>
+    <a class="text-stone-500 hover:text-stone-800 transition-colors text-sm tracking-wide uppercase font-label" href="/catalog">Collections</a>
+    <a class="text-stone-500 hover:text-stone-800 transition-colors text-sm tracking-wide uppercase font-label" href="/catalog?category=Glassware">Glassware</a>
+    <a class="text-stone-500 hover:text-stone-800 transition-colors text-sm tracking-wide uppercase font-label" href="/catalog?category=Ceramics">Ceramics</a>
+    <a class="text-stone-500 hover:text-stone-800 transition-colors text-sm tracking-wide uppercase font-label" href="/catalog?category=Bespeak">Bespeak</a>
+    <a class="text-stone-500 hover:text-stone-800 transition-colors text-sm tracking-wide uppercase font-label" href="/contact">Contact Us</a>
+  </div>
+  <div class="flex items-center gap-6">
+    <a href="/catalog" class="text-stone-700 hover:opacity-80 transition-opacity">
+      <span class="material-symbols-outlined">search</span>
+    </a>
+    <button class="text-stone-700 hover:opacity-80 transition-opacity relative cart-trigger">
+      <span class="material-symbols-outlined">shopping_bag</span>
+      <span class="cart-badge absolute -top-1 -right-1 bg-secondary text-on-secondary text-[10px] w-4 h-4 rounded-full flex items-center justify-center" style="display:none;">0</span>
+    </button>
+  </div>
+</nav>
+
+<main class="pt-20">
+  <!-- Hero Section: Product View (dynamically populated) -->
+  <section id="product-hero" class="relative min-h-screen flex flex-col md:flex-row items-center px-8 md:px-20 py-12 gap-12 overflow-hidden">
+    <!-- Content loaded by product.js -->
+  </section>
+
+  <!-- Technical Specifications -->
+  <section class="bg-surface-container py-24 px-8 md:px-20">
+    <div class="max-w-7xl mx-auto">
+      <div id="specs-section" class="grid grid-cols-1 md:grid-cols-3 gap-16">
+        <!-- Specs loaded by product.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Related Products -->
+  <section id="related-section" class="py-24 px-8 md:px-20 max-w-7xl mx-auto" style="display:none;">
+    <div class="flex justify-between items-end mb-12">
+      <div>
+        <span class="text-[10px] font-label uppercase tracking-widest text-outline mb-2 block">Curated Pairings</span>
+        <h2 class="font-headline text-3xl md:text-4xl">Complete the Set</h2>
+      </div>
+    </div>
+    <div id="related-grid" class="grid grid-cols-1 md:grid-cols-3 gap-12">
+      <!-- Related products loaded by product.js -->
+    </div>
+  </section>
+</main>
+
+<!-- Footer -->
+<footer class="bg-stone-100 py-12 border-t border-stone-200/10">
+  <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center px-8">
+    <div class="text-stone-600 font-label text-[10px] tracking-widest uppercase order-2 md:order-1 mt-8 md:mt-0">
+      © 2024 HHM Innovation. Refracted Luxury.
+    </div>
+  </div>
+</footer>
+
+<script src="/js/app.js"></script>
+<script src="/js/product.js"></script>
+</body>
+</html>

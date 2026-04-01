@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>HHM Innovation | Admin Dashboard</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "inverse-on-surface":"#f1f1ef","on-secondary-fixed":"#271900","surface-dim":"#dadad8","on-error":"#ffffff","primary-fixed-dim":"#c8c6c5","inverse-surface":"#2f3130","secondary":"#765a26","outline-variant":"#cdc5bb","outline":"#7c766e","surface-variant":"#e3e2e0","secondary-fixed":"#ffdea9","secondary-fixed-dim":"#e6c184","on-tertiary":"#ffffff","surface-tint":"#5f5e5e","surface-container-high":"#e9e8e6","on-primary-fixed":"#1c1b1b","tertiary-fixed":"#e4e2df","on-error-container":"#93000a","on-primary":"#ffffff","error-container":"#ffdad6","on-surface-variant":"#4b463f","surface-container":"#efeeec","background":"#faf9f7","on-secondary-fixed-variant":"#5c4211","primary-fixed":"#e5e2e1","on-tertiary-fixed-variant":"#474745","tertiary-container":"#dddbd8","primary":"#5f5e5e","surface-container-low":"#f4f3f1","on-secondary-container":"#785c29","on-primary-container":"#60605f","primary-container":"#dddbda","surface":"#faf9f7","on-tertiary-fixed":"#1b1c1a","error":"#ba1a1a","on-background":"#1a1c1b","on-primary-fixed-variant":"#474746","tertiary-fixed-dim":"#c8c6c4","on-secondary":"#ffffff","tertiary":"#5f5e5c","on-surface":"#1a1c1b","surface-bright":"#faf9f7","surface-container-lowest":"#ffffff","surface-container-highest":"#e3e2e0","on-tertiary-container":"#60605e","inverse-primary":"#c8c6c5","secondary-container":"#fed798"
+          },
+          fontFamily: { "headline": ["Noto Serif"], "body": ["Manrope"], "label": ["Manrope"] },
+          borderRadius: {"DEFAULT":"0.125rem","lg":"0.25rem","xl":"0.5rem","full":"0.75rem"},
+        },
+      },
+    }
+  </script>
+  <link rel="stylesheet" href="/css/styles.css"/>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-secondary/20">
+<div class="flex min-h-screen">
+  <!-- SideNavBar -->
+  <aside class="bg-stone-50 h-screen w-64 border-r border-stone-200/10 flex flex-col py-6 px-4 fixed left-0 top-0 z-40">
+    <div class="mb-10 px-4">
+      <h1 class="text-lg font-serif italic text-stone-900">HHM Admin</h1>
+      <p class="text-[10px] uppercase tracking-[0.2em] text-stone-500 mt-1">Luxury Control Panel</p>
+    </div>
+    <nav class="flex-1 space-y-1">
+      <a class="admin-nav-link bg-stone-200/50 text-stone-900 font-semibold group flex items-center px-4 py-3 text-sm transition-all duration-200 rounded-sm cursor-pointer" data-section="dashboard" onclick="showSection('dashboard')">
+        <span class="material-symbols-outlined mr-3 text-stone-800" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+        Dashboard
+      </a>
+      <a class="admin-nav-link text-stone-500 hover:bg-stone-100 group flex items-center px-4 py-3 text-sm transition-all duration-200 hover:translate-x-1 rounded-sm cursor-pointer" data-section="inventory" onclick="showSection('inventory')">
+        <span class="material-symbols-outlined mr-3">inventory_2</span>
+        Inventory
+      </a>
+      <a class="admin-nav-link text-stone-500 hover:bg-stone-100 group flex items-center px-4 py-3 text-sm transition-all duration-200 hover:translate-x-1 rounded-sm cursor-pointer" data-section="orders" onclick="showSection('orders')">
+        <span class="material-symbols-outlined mr-3">payments</span>
+        Orders
+      </a>
+      <a class="admin-nav-link text-stone-500 hover:bg-stone-100 group flex items-center px-4 py-3 text-sm transition-all duration-200 hover:translate-x-1 rounded-sm cursor-pointer" data-section="settings" onclick="showSection('settings')">
+        <span class="material-symbols-outlined mr-3">settings</span>
+        Settings
+      </a>
+    </nav>
+    <div class="mt-auto px-4 pt-4 border-t border-stone-200/10">
+      <div class="flex items-center">
+        <div class="w-8 h-8 bg-primary-container rounded-full flex items-center justify-center text-sm font-bold text-stone-600">
+          JV
+        </div>
+        <div class="ml-3">
+          <p id="admin-name" class="text-xs font-semibold text-stone-900">Admin</p>
+          <p id="admin-role" class="text-[10px] text-stone-500 uppercase">Curator</p>
+        </div>
+      </div>
+      <button onclick="adminLogout()" class="mt-3 text-[10px] font-label uppercase tracking-widest text-stone-400 hover:text-error transition-colors">
+        Sign Out
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 ml-64 p-8">
+    <!-- Header -->
+    <header class="flex justify-between items-end mb-12">
+      <div>
+        <h2 id="section-title" class="font-headline text-4xl font-bold tracking-tighter text-on-surface">Vitreous Overview</h2>
+        <p id="section-desc" class="font-body text-sm text-on-surface-variant mt-2 tracking-wide">Refining the landscape of luxury glassware management.</p>
+      </div>
+      <div class="flex gap-4 items-center">
+        <a href="/" class="bg-surface-container-lowest glass-panel specular-highlight ambient-float px-6 py-2 text-xs font-label uppercase tracking-widest text-primary hover:opacity-80 transition-all rounded-sm no-underline">
+          View Store
+        </a>
+        <button onclick="openNewProduct()" class="bg-primary text-on-primary px-6 py-2 text-xs font-label uppercase tracking-widest shadow-lg shadow-primary/20 hover:opacity-90 transition-all rounded-sm">
+          New Acquisition
+        </button>
+      </div>
+    </header>
+
+    <!-- ==================== DASHBOARD SECTION ==================== -->
+    <div id="section-dashboard" class="admin-section">
+      <!-- Key Metrics -->
+      <section class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+        <div class="bg-surface-container-lowest p-8 rounded-sm ambient-float specular-highlight relative overflow-hidden group">
+          <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+            <span class="material-symbols-outlined text-6xl">query_stats</span>
+          </div>
+          <p class="text-[10px] font-label uppercase tracking-[0.3em] text-secondary mb-4">Gross Revenue</p>
+          <h3 id="metric-revenue" class="font-headline text-3xl font-bold text-on-surface">₹0.00</h3>
+          <div class="mt-4 flex items-center text-[10px] font-label text-emerald-600">
+            <span class="material-symbols-outlined text-xs mr-1">trending_up</span>
+            ALL TIME REVENUE
+          </div>
+        </div>
+        <div class="bg-surface-container-lowest p-8 rounded-sm ambient-float specular-highlight relative overflow-hidden group">
+          <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+            <span class="material-symbols-outlined text-6xl">shopping_cart</span>
+          </div>
+          <p class="text-[10px] font-label uppercase tracking-[0.3em] text-secondary mb-4">Active Commissions</p>
+          <h3 id="metric-orders" class="font-headline text-3xl font-bold text-on-surface">0</h3>
+          <div id="metric-processing" class="mt-4 flex items-center text-[10px] font-label text-amber-600">
+            <span class="material-symbols-outlined text-xs mr-1">pending</span>
+            0 AWAITING FULFILLMENT
+          </div>
+        </div>
+        <div class="bg-surface-container-lowest p-8 rounded-sm ambient-float specular-highlight relative overflow-hidden group">
+          <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+            <span class="material-symbols-outlined text-6xl">diamond</span>
+          </div>
+          <p class="text-[10px] font-label uppercase tracking-[0.3em] text-secondary mb-4">Vault Inventory</p>
+          <h3 class="font-headline text-3xl font-bold text-on-surface"><span id="metric-inventory">0</span> <span class="text-lg font-light text-on-surface-variant">Units</span></h3>
+          <div id="metric-integrity" class="mt-4 flex items-center text-[10px] font-label text-on-surface-variant">
+            <span class="material-symbols-outlined text-xs mr-1">check_circle</span>
+            0% STOCK INTEGRITY
+          </div>
+        </div>
+      </section>
+
+      <!-- Dashboard Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Recent Orders Table -->
+        <div class="lg:col-span-2 bg-surface-container-low rounded-sm p-1">
+          <div class="bg-surface-container-lowest p-8 rounded-sm h-full">
+            <div class="flex justify-between items-center mb-8">
+              <h4 class="font-headline text-xl font-bold tracking-tight">Recent Acquisitions</h4>
+              <a class="text-[10px] font-label uppercase tracking-widest text-secondary hover:underline cursor-pointer" onclick="showSection('orders')">View All Registry</a>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr class="border-b border-outline-variant/20">
+                    <th class="pb-4 text-[10px] font-label uppercase tracking-widest text-on-surface-variant">Collection</th>
+                    <th class="pb-4 text-[10px] font-label uppercase tracking-widest text-on-surface-variant">Recipient</th>
+                    <th class="pb-4 text-[10px] font-label uppercase tracking-widest text-on-surface-variant">Status</th>
+                    <th class="pb-4 text-[10px] font-label uppercase tracking-widest text-on-surface-variant text-right">Value</th>
+                  </tr>
+                </thead>
+                <tbody id="recent-orders-body" class="divide-y divide-outline-variant/10">
+                  <!-- Loaded dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Inventory Status -->
+        <div class="bg-surface-container-lowest p-8 rounded-sm ambient-float specular-highlight flex flex-col">
+          <h4 class="font-headline text-xl font-bold tracking-tight mb-8">Inventory Refraction</h4>
+          <div class="flex-1 space-y-8">
+            <div>
+              <div class="flex justify-between items-end mb-2">
+                <p class="text-[10px] font-label uppercase tracking-widest text-on-surface-variant">Glassware</p>
+                <p class="inv-pct text-xs font-semibold">0%</p>
+              </div>
+              <div class="h-1 w-full bg-surface-container-high overflow-hidden">
+                <div id="inv-glass" class="h-full bg-secondary transition-all w-[0%]"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between items-end mb-2">
+                <p class="text-[10px] font-label uppercase tracking-widest text-on-surface-variant">Artisanal Ceramics</p>
+                <p class="inv-pct text-xs font-semibold">0%</p>
+              </div>
+              <div class="h-1 w-full bg-surface-container-high overflow-hidden">
+                <div id="inv-ceramic" class="h-full bg-primary transition-all w-[0%]"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between items-end mb-2">
+                <p class="text-[10px] font-label uppercase tracking-widest text-on-surface-variant">Accessories</p>
+                <p class="inv-pct text-xs font-semibold">0%</p>
+              </div>
+              <div class="h-1 w-full bg-surface-container-high overflow-hidden">
+                <div id="inv-accessories" class="h-full bg-on-surface transition-all w-[0%]"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between items-end mb-2">
+                <p class="text-[10px] font-label uppercase tracking-widest text-on-surface-variant">Bespeak</p>
+                <p class="inv-pct text-xs font-semibold">0%</p>
+              </div>
+              <div class="h-1 w-full bg-surface-container-high overflow-hidden">
+                <div id="inv-bespeak" class="h-full bg-secondary-fixed-dim transition-all w-[0%]"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== INVENTORY SECTION ==================== -->
+    <div id="section-inventory" class="admin-section" style="display:none;">
+      <div class="bg-surface-container-lowest rounded-sm ambient-float">
+        <div class="p-8">
+          <div class="flex justify-between items-center mb-8">
+            <h4 class="font-headline text-xl font-bold tracking-tight">Product Registry</h4>
+            <button onclick="openNewProduct()" class="text-[10px] font-label uppercase tracking-widest text-secondary hover:underline">+ Add New</button>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="border-b border-outline-variant/20">
+                  <th class="pb-4 text-[10px] font-label uppercase tracking-widest text-on-surface-variant">Product</th>
+                  <th class="pb-4 text-[10px] font-label uppercase tracking-widest text-on-surface-variant">Category</th>
+                  <th class="pb-4 text-[10px] font-label uppercase tracking-widest text-on-surface-variant">Material</th>
+                  <th class="pb-4 text-[10px] font-label uppercase tracking-widest text-on-surface-variant">Price</th>
+                  <th class="pb-4 text-[10px] font-label uppercase tracking-widest text-on-surface-variant">Stock</th>
+                  <th class="pb-4 text-[10px] font-label uppercase tracking-widest text-on-surface-variant text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="inventory-body" class="divide-y divide-outline-variant/10">
+                <!-- Loaded dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== ORDERS SECTION ==================== -->
+    <div id="section-orders" class="admin-section" style="display:none;">
+      <div class="bg-surface-container-lowest rounded-sm ambient-float">
+        <div class="p-8">
+          <div class="flex justify-between items-center mb-8">
+            <h4 class="font-headline text-xl font-bold tracking-tight">Order Registry</h4>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="border-b border-outline-variant/20">
+                  <th class="pb-4 text-[10px] font-label uppercase tracking-widest text-on-surface-variant">ID</th>
+                  <th class="pb-4 text-[10px] font-label uppercase tracking-widest text-on-surface-variant">Customer</th>
+                  <th class="pb-4 text-[10px] font-label uppercase tracking-widest text-on-surface-variant">Email</th>
+                  <th class="pb-4 text-[10px] font-label uppercase tracking-widest text-on-surface-variant">Phone</th>
+                  <th class="pb-4 text-[10px] font-label uppercase tracking-widest text-on-surface-variant">Address</th>
+                  <th class="pb-4 text-[10px] font-label uppercase tracking-widest text-on-surface-variant">Products</th>
+                  <th class="pb-4 text-[10px] font-label uppercase tracking-widest text-on-surface-variant">Status</th>
+                  <th class="pb-4 text-[10px] font-label uppercase tracking-widest text-on-surface-variant text-right">Value</th>
+                  <th class="pb-4 text-[10px] font-label uppercase tracking-widest text-on-surface-variant text-right">Date</th>
+                </tr>
+              </thead>
+              <tbody id="orders-body" class="divide-y divide-outline-variant/10">
+                <!-- Loaded dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== SETTINGS SECTION ==================== -->
+    <div id="section-settings" class="admin-section" style="display:none;">
+      <div class="bg-surface-container-lowest rounded-sm ambient-float p-8">
+        <h4 class="font-headline text-xl font-bold tracking-tight mb-8">Configuration</h4>
+        <div class="space-y-6 max-w-lg">
+          <div>
+            <label class="text-[10px] font-label uppercase tracking-widest text-outline mb-2 block">Store Name</label>
+            <input value="HHM Innovation" class="w-full px-4 py-3 border border-outline-variant/40 bg-transparent text-sm outline-none focus:border-secondary transition-colors" readonly />
+          </div>
+          <div>
+            <label class="text-[10px] font-label uppercase tracking-widest text-outline mb-2 block">Default Currency</label>
+            <select class="w-full px-4 py-3 border border-outline-variant/40 bg-transparent text-sm outline-none focus:border-secondary transition-colors">
+              <option>USD ($)</option>
+              <option>EUR (€)</option>
+              <option>GBP (£)</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-[10px] font-label uppercase tracking-widest text-outline mb-2 block">Admin Credentials</label>
+            <p class="text-sm text-on-surface-variant">Username: <strong>adityasir</strong> | Password: <strong>samsung1</strong></p>
+            <p class="text-[10px] text-stone-400 mt-2">Contact system administrator to change credentials.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-20 py-8 border-t border-stone-200/10 flex justify-between items-center">
+      <p class="text-[9px] font-label uppercase tracking-widest text-stone-400">© 2024 HHM Innovation. Refracted Luxury.</p>
+    </footer>
+  </main>
+</div>
+
+<!-- Product Edit/Create Modal -->
+<div id="product-modal-backdrop" class="modal-backdrop" onclick="closeProductModal()"></div>
+<div id="product-modal" class="modal-content bg-surface-container-lowest p-8 w-full max-w-2xl shadow-2xl">
+  <div class="flex justify-between items-start mb-8">
+    <h2 id="product-form-title" class="font-headline text-2xl">New Acquisition</h2>
+    <button onclick="closeProductModal()" class="text-stone-400 hover:text-stone-800 transition-colors">
+      <span class="material-symbols-outlined">close</span>
+    </button>
+  </div>
+  <form id="product-form" onsubmit="saveProduct(event)" class="space-y-4">
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <label class="text-[10px] font-label uppercase tracking-widest text-outline mb-1 block">Product Name *</label>
+        <input name="pName" required class="w-full px-3 py-2 border border-outline-variant/40 bg-transparent text-sm outline-none focus:border-secondary" />
+      </div>
+      <div>
+        <label class="text-[10px] font-label uppercase tracking-widest text-outline mb-1 block">Collection *</label>
+        <input name="pCollection" required class="w-full px-3 py-2 border border-outline-variant/40 bg-transparent text-sm outline-none focus:border-secondary" />
+      </div>
+    </div>
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <label class="text-[10px] font-label uppercase tracking-widest text-outline mb-1 block">Category *</label>
+        <select name="pCategory" required class="w-full px-3 py-2 border border-outline-variant/40 bg-transparent text-sm outline-none focus:border-secondary">
+          <option value="Glassware">Glassware</option>
+          <option value="Ceramics">Ceramics</option>
+          <option value="Accessories">Accessories</option>
+          <option value="Bespeak">Bespeak</option>
+        </select>
+      </div>
+      <div>
+        <label class="text-[10px] font-label uppercase tracking-widest text-outline mb-1 block">Material *</label>
+        <input name="pMaterial" required class="w-full px-3 py-2 border border-outline-variant/40 bg-transparent text-sm outline-none focus:border-secondary" />
+      </div>
+    </div>
+    <div>
+      <label class="text-[10px] font-label uppercase tracking-widest text-outline mb-1 block">Description *</label>
+      <textarea name="pDescription" required rows="3" class="w-full px-3 py-2 border border-outline-variant/40 bg-transparent text-sm outline-none focus:border-secondary resize-none"></textarea>
+    </div>
+    <div class="grid grid-cols-3 gap-4">
+      <div>
+        <label class="text-[10px] font-label uppercase tracking-widest text-outline mb-1 block">Price *</label>
+        <input name="pPrice" type="number" step="0.01" required class="w-full px-3 py-2 border border-outline-variant/40 bg-transparent text-sm outline-none focus:border-secondary" />
+      </div>
+      <div>
+        <label class="text-[10px] font-label uppercase tracking-widest text-outline mb-1 block">Currency</label>
+        <select name="pCurrency" class="w-full px-3 py-2 border border-outline-variant/40 bg-transparent text-sm outline-none focus:border-secondary">
+          <option value="USD">USD ($)</option>
+          <option value="EUR">EUR (€)</option>
+        </select>
+      </div>
+      <div>
+        <label class="text-[10px] font-label uppercase tracking-widest text-outline mb-1 block">Stock</label>
+        <input name="pStock" type="number" value="0" class="w-full px-3 py-2 border border-outline-variant/40 bg-transparent text-sm outline-none focus:border-secondary" />
+      </div>
+    </div>
+    <div>
+      <label class="text-[10px] font-label uppercase tracking-widest text-outline mb-1 block">Image URL *</label>
+      <input name="pImageUrl" required class="w-full px-3 py-2 border border-outline-variant/40 bg-transparent text-sm outline-none focus:border-secondary" placeholder="https://..." />
+    </div>
+    <div class="grid grid-cols-3 gap-4">
+      <div>
+        <label class="text-[10px] font-label uppercase tracking-widest text-outline mb-1 block">Origin</label>
+        <input name="pOrigin" class="w-full px-3 py-2 border border-outline-variant/40 bg-transparent text-sm outline-none focus:border-secondary" />
+      </div>
+      <div>
+        <label class="text-[10px] font-label uppercase tracking-widest text-outline mb-1 block">Capacity</label>
+        <input name="pCapacity" class="w-full px-3 py-2 border border-outline-variant/40 bg-transparent text-sm outline-none focus:border-secondary" />
+      </div>
+      <div>
+        <label class="text-[10px] font-label uppercase tracking-widest text-outline mb-1 block">Badge</label>
+        <input name="pBadge" class="w-full px-3 py-2 border border-outline-variant/40 bg-transparent text-sm outline-none focus:border-secondary" placeholder="e.g. Bestseller" />
+      </div>
+    </div>
+    <div class="flex items-center gap-3">
+      <input name="pFeatured" type="checkbox" class="w-4 h-4 border-outline-variant text-secondary focus:ring-0 rounded-none" />
+      <label class="text-sm text-on-surface-variant">Featured product (shown on homepage)</label>
+    </div>
+    <div class="flex gap-4 pt-4">
+      <button type="submit" class="flex-1 bg-primary text-on-primary py-3 font-label tracking-widest uppercase text-xs hover:opacity-90 transition-all">
+        Save Product
+      </button>
+      <button type="button" onclick="closeProductModal()" class="px-8 py-3 border border-outline-variant font-label tracking-widest uppercase text-xs hover:bg-stone-100 transition-all">
+        Cancel
+      </button>
+    </div>
+  </form>
+</div>
+
+<script src="/js/app.js"></script>
+<script src="/js/admin.js"></script>
+</body>
+</html>

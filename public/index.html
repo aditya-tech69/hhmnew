@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>HHM Innovation | Refracted Luxury</title>
+  <meta name="description" content="Discover HHM Innovation's curated collection of artisanal crockery and glassware. Where the physics of light meets the art of the kiln.">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <!-- Material Symbols -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "inverse-on-surface":"#f1f1ef","on-secondary-fixed":"#271900","surface-dim":"#dadad8","on-error":"#ffffff","primary-fixed-dim":"#c8c6c5","inverse-surface":"#2f3130","secondary":"#765a26","outline-variant":"#cdc5bb","outline":"#7c766e","surface-variant":"#e3e2e0","secondary-fixed":"#ffdea9","secondary-fixed-dim":"#e6c184","on-tertiary":"#ffffff","surface-tint":"#5f5e5e","surface-container-high":"#e9e8e6","on-primary-fixed":"#1c1b1b","tertiary-fixed":"#e4e2df","on-error-container":"#93000a","on-primary":"#ffffff","error-container":"#ffdad6","on-surface-variant":"#4b463f","surface-container":"#efeeec","background":"#faf9f7","on-secondary-fixed-variant":"#5c4211","primary-fixed":"#e5e2e1","on-tertiary-fixed-variant":"#474745","tertiary-container":"#dddbd8","primary":"#5f5e5e","surface-container-low":"#f4f3f1","on-secondary-container":"#785c29","on-primary-container":"#60605f","primary-container":"#dddbda","surface":"#faf9f7","on-tertiary-fixed":"#1b1c1a","error":"#ba1a1a","on-background":"#1a1c1b","on-primary-fixed-variant":"#474746","tertiary-fixed-dim":"#c8c6c4","on-secondary":"#ffffff","tertiary":"#5f5e5c","on-surface":"#1a1c1b","surface-bright":"#faf9f7","surface-container-lowest":"#ffffff","surface-container-highest":"#e3e2e0","on-tertiary-container":"#60605e","inverse-primary":"#c8c6c5","secondary-container":"#fed798"
+          },
+          fontFamily: { "headline": ["Noto Serif"], "body": ["Manrope"], "label": ["Manrope"] },
+          borderRadius: {"DEFAULT":"0.125rem","lg":"0.25rem","xl":"0.5rem","full":"0.75rem"},
+        },
+      },
+    }
+  </script>
+  <link rel="stylesheet" href="/css/styles.css"/>
+</head>
+<body class="bg-background text-on-background font-body selection:bg-secondary/20 overflow-x-hidden">
+
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 border-b border-stone-200/15 bg-white/70 glass-nav flex justify-between items-center px-8 h-20 transition-all duration-300">
+  <a href="/" class="text-2xl font-serif tracking-tighter text-stone-800 italic no-underline">HHM Innovation</a>
+  <div class="hidden md:flex items-center gap-10">
+    <a class="text-sm tracking-wide uppercase font-label text-stone-900 border-b border-stone-800 pb-1" href="/">Collections</a>
+    <a class="text-sm tracking-wide uppercase font-label text-stone-500 hover:text-stone-800 transition-colors" href="/catalog?category=Glassware">Glassware</a>
+    <a class="text-sm tracking-wide uppercase font-label text-stone-500 hover:text-stone-800 transition-colors" href="/catalog?category=Ceramics">Ceramics</a>
+    <a class="text-sm tracking-wide uppercase font-label text-stone-500 hover:text-stone-800 transition-colors" href="/catalog?category=Bespeak">Bespeak</a>
+    <a class="text-sm tracking-wide uppercase font-label text-stone-500 hover:text-stone-800 transition-colors" href="/contact">Contact Us</a>
+  </div>
+  <div class="flex items-center gap-6">
+    <a href="/catalog" class="hover:opacity-80 transition-opacity duration-300">
+      <span class="material-symbols-outlined text-stone-700">search</span>
+    </a>
+    <button class="hover:opacity-80 transition-opacity duration-300 relative cart-trigger">
+      <span class="material-symbols-outlined text-stone-700">shopping_bag</span>
+      <span class="cart-badge absolute -top-1 -right-1 w-4 h-4 bg-secondary text-on-secondary text-[10px] rounded-full flex items-center justify-center" style="display:none;">0</span>
+    </button>
+  </div>
+</nav>
+
+<main class="pt-20">
+  <!-- Hero Section -->
+  <section class="relative min-h-[921px] flex items-center px-8 md:px-20 overflow-hidden bg-surface">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center w-full max-w-7xl mx-auto">
+      <div class="lg:col-span-6 z-10">
+        <span class="font-label text-xs tracking-[0.4em] uppercase text-secondary mb-6 block">Artisanal Curation</span>
+        <h1 class="font-headline text-6xl md:text-8xl lg:text-9xl leading-[0.9] tracking-tighter text-on-surface mb-8">
+          Vitreous<br/><span class="italic font-light">Elegance.</span>
+        </h1>
+        <p class="font-body text-lg text-on-surface-variant max-w-md mb-10 leading-relaxed">
+          Where the physics of light meets the art of the kiln. Discover crockery and glassware designed to refract the ordinary into the sublime.
+        </p>
+        <div class="flex items-center gap-8">
+          <a href="/catalog" class="bg-primary text-on-primary px-10 py-4 rounded-sm text-sm uppercase tracking-widest font-label hover:bg-stone-800 transition-all duration-300 no-underline">
+            Explore Archive
+          </a>
+          <button class="font-label text-sm uppercase tracking-widest border-b border-transparent hover:border-secondary transition-all" onclick="document.getElementById('craftsmanship').scrollIntoView({behavior:'smooth'})">
+            Our Process
+          </button>
+        </div>
+      </div>
+      <!-- Floating 3D Elements -->
+      <div class="lg:col-span-6 relative h-[600px] flex items-center justify-center">
+        <div class="absolute inset-0 bg-radial-gradient from-primary-container/20 to-transparent rounded-full blur-3xl"></div>
+        <div class="relative w-full h-full">
+          <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] z-0 opacity-20">
+            <img class="w-full h-full object-contain mix-blend-multiply" alt="Abstract glass sculpture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuARdyfzaUhNhlvMkdPR5LfIFe5gSSosoTMwiKm1KMWFdLa3xK0hpSFqUyuZfCz00iMppzoB7HHMvqma0aFcTB8RHxVgjy8Hy_EWaiJ6CGajNESOXulvTwhWqNoIQZM5awxAPq6zrJQQTsZ_uTsdgyV6eMPD7NfW5YetUF9-0-Bgf-Usu6bxD2OXxahKaEqLO6CNyLXqWwEmpNmqXEDqHKaC__92Gz8-ObEc0if-YaRV_6GstBCrlm9S_3SKnq3D_HrnFvm54FCMLGuP"/>
+          </div>
+          <div class="absolute top-20 right-0 w-48 h-48 bg-surface-container-lowest/70 backdrop-blur-xl p-4 rounded-sm glass-highlight shadow-2xl z-20">
+            <img class="w-full h-full object-cover grayscale opacity-80" alt="Crystal wine glass" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBeJAWQEUbaVvmadp-ZWdze_uIUUnh4pH1LwxoLxDw6TDMD0zQKyC-Wyxm6SvEhdevQ_sxsaFhtcMMwm6fizswh0uFauuLgMw6CjHs8Yhg3SnGR0yfERKUothnjlqnrr46ZCJjsO2h8OAr5ZlNSPTmVHu2nfBjGLiMhJR1RGOnzstoZrXfq1QoJNC15tbVCoXHwgOugzwQye6-ym6yEsCQhhc8CR-QoNrv2oEVuigaVP8wlgwZpHuN6fFRPBfhikVFA1SPd3ge3m_DC"/>
+          </div>
+          <div class="absolute bottom-10 left-10 w-64 h-64 bg-surface-container-lowest/40 backdrop-blur-md p-2 rounded-sm glass-highlight z-10">
+            <img class="w-full h-full object-cover" alt="White ceramic plate" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDK2xwKbnXkObAwimfTUgggc5TVjdXGiU4HKi_jrwmbJ8OCYShTrTM19bUsK7nrqeRScvS4hMs05-BYa8Cl2TZnI1_qHVSbsVVy5CxQYkoxgWj2KsofMQswon5lOGV4yLbnwABLTD8NorpFJU_v86ebbdPxVBAH8JdSeNnfKb7ryM4zAFBMujVaWEoyrkLLoImlajEt4PkdoztMbmwzIWDRQbO8z7QnMldTv8qHG-dm5T0qb4aQLKOI35jv5KtM4y4Ycc1_hQyPkIKO"/>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Signature Collections Grid -->
+  <section class="py-32 px-8 bg-surface-container-low">
+    <div class="max-w-7xl mx-auto">
+      <div class="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
+        <div>
+          <h2 class="font-headline text-5xl text-on-surface mb-4">Signature Collections</h2>
+          <p class="font-body text-on-surface-variant max-w-sm">Curated series defined by material purity and architectural form.</p>
+        </div>
+        <a class="font-label text-sm uppercase tracking-[0.2em] text-secondary flex items-center gap-2 group no-underline" href="/catalog">
+          View All Collections 
+          <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_right_alt</span>
+        </a>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-8 h-auto md:h-[1000px]">
+        <!-- Large Feature Card -->
+        <a href="/catalog?category=Glassware" class="md:col-span-8 relative overflow-hidden group rounded-sm bg-surface-container-lowest no-underline block">
+          <img class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 opacity-90" alt="High-end dining set" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGpCBkjZklbawvBl0P4OQIqmZOVoGyO9CqSQcHckk1OIIm5T3pI6_6U1d7FNcDfgd4n2sHXjIA1hUMSp-3U69WCo1brNlJsoz_YrMCmjIA9Erhx4pHJOKXcDlqNOpR81wkjQk4OOC_NFrOEX-rGz6cWAXRI8ggmBhV15gLdNtU6YX986yfw2QztRD3Iy0VlCRkKpmPj96-k0qnvuOfpdy25lSHlky4ZEdok3nBw6NyjOAqg17G02mhPYFA0tRkjL3veCyBPP1ehvba"/>
+          <div class="absolute bottom-12 left-12 right-12 p-10 bg-white/40 backdrop-blur-lg glass-highlight border-l-4 border-secondary">
+            <span class="font-label text-xs tracking-widest text-secondary uppercase mb-2 block">Premium Tier</span>
+            <h3 class="font-headline text-4xl mb-4 text-on-surface">The Gossamer Series</h3>
+            <p class="font-body text-sm text-stone-700 max-w-md mb-6 leading-relaxed">Engineered with lead-free crystal for a weightless tactile experience and maximum clarity.</p>
+            <span class="font-label text-xs uppercase tracking-widest py-2 border-b border-stone-800 text-on-surface">Discover</span>
+          </div>
+        </a>
+        <!-- Vertical Tall Card -->
+        <a href="/catalog?category=Ceramics" class="md:col-span-4 relative overflow-hidden group rounded-sm bg-surface-container-low no-underline block">
+          <img class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="Charcoal ceramic plates" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-iggIl8o_ZjXur_BMmhUIKwtNs0fkUxIPxVITAfucOyjJh1g0w6xN3py5nRi4-mnlG3-OIzcUvSzIbbVm4fem2HX9GfCTSNymvGXu3aXSDhK1Qc2pa_GU-oK79lf2LY1J3GpschRX41zXQdhf_E5auh_SdCJoNcr7jvu6AeZwGZn0Uw4YNll2EEzcdjqt1p38z6hHWpEXzAFozQaH0LbFoZ08-jfDmlrKNHlxaEKW6NsLh2DJNl1leo5Jd1uqNfJ7r0g_LVAb4Si8"/>
+          <div class="absolute inset-0 bg-gradient-to-t from-on-surface/60 to-transparent"></div>
+          <div class="absolute bottom-8 left-8 text-white">
+            <h3 class="font-headline text-3xl mb-2">Obsidian Matte</h3>
+            <p class="font-label text-xs tracking-widest uppercase opacity-80">Ceramic Innovation</p>
+          </div>
+        </a>
+        <!-- Horizontal Grid Items -->
+        <a href="/product/3" class="md:col-span-4 relative overflow-hidden group rounded-sm no-underline block">
+          <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Amber glass decanter" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA73FM9fe5OOLMl-5JNoEC7boyG8ufDKbD-8n9rPbZMsWAhmTy0zsjr4R8p-EaNal409i7g9Nzvj5QbQh7jZsbwgFvBQ1h03dBoOEPGp-ER-XDFHV1Px7TjKEDqrTZILQCrPsFVQB8yzHZQXwmwFsEL3YujR3f5HKVMJJQHPM6apnqKAxmYfTN6oE8BjSJCqdZhcmRiSEcs8GU0_jXgMBgE01yAx0OyKgxP2LpzKNcWafNJSSjtLYprJHaSlj2DuP3_r32E7F-9M-ef"/>
+          <div class="absolute top-6 left-6 py-2 px-4 bg-white/20 backdrop-blur-md rounded-full text-xs font-label uppercase tracking-widest text-white">Prism Glass</div>
+        </a>
+        <div class="md:col-span-4 relative overflow-hidden group rounded-sm bg-surface">
+          <div class="p-12 h-full flex flex-col justify-center">
+            <span class="font-label text-xs tracking-[0.3em] text-secondary uppercase mb-4 block">Our Values</span>
+            <h3 class="font-headline text-3xl mb-6">Uncompromising Clarity.</h3>
+            <p class="font-body text-on-surface-variant leading-relaxed">Each piece is inspected under refracted light to ensure zero imperfections. We believe luxury is found in what isn't there.</p>
+          </div>
+        </div>
+        <a href="/catalog" class="md:col-span-4 relative overflow-hidden group rounded-sm no-underline block">
+          <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Minimalist teapot" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhMnCTUGeGEGaKbbJCzulPCfZNULgP1HI9Nt39QCusMEOEdUFhl-BYGCtCSd6VOe_u52tpx4tQ1X2Vk36MFoei3tnidOpy3QI72tGFDxdLNPW9XXvsPu5fmFDghQtrw5mPILE_TUbKf_WDMXf3Qse7X_BKU5i0Z0xGAPs_R4cpGoMNFQjIBvZPoJTBduhMcNkrMA6iqbjgazY8aP1mOzjJ8uBvOpBRDrrSjguDhiz4DEieVSwP2wx4coAKt7uHPJ9tB4Ro7HVTE6y_"/>
+          <div class="absolute bottom-6 right-6 text-right">
+            <h4 class="font-headline text-xl text-on-surface">The Tea Ritual</h4>
+            <p class="font-label text-[10px] tracking-widest uppercase text-secondary">New Arrival</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Craftsmanship Section -->
+  <section id="craftsmanship" class="py-32 bg-surface">
+    <div class="max-w-7xl mx-auto px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
+        <div class="order-2 lg:order-1 relative">
+          <div class="absolute -top-12 -left-12 w-64 h-64 bg-secondary/5 rounded-full blur-3xl"></div>
+          <img class="rounded-sm grayscale-50 shadow-2xl relative z-10 w-full aspect-[4/5] object-cover" alt="Artisan glass blower" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAuFhvrNAeu4he2huO9s46XCCFTbztsEBL515qotF7lirHC9MQbZxwlH9D-8Gi7F1FlLpBHVpYti9ZVqpk3SNFG4vdh4FNshtvgNYgpPeqgAwvajbgRq8dSp0xIgogyCQBH7qJPH_rgbgfUixgPibQIFfXfCEH8EBS64FnMB05OnGMWFMgl3Eo_J_Dv4En0EYpmJCCthLZ6tl_zXovYdmDuBdKPEcVbhDFr2-4XROyoP-RN8m4N1QcVQNT81gMB8D0oqafHWvRC4Ch2"/>
+          <div class="absolute -bottom-10 -right-10 w-48 h-48 border border-outline-variant/30 hidden md:block"></div>
+        </div>
+        <div class="order-1 lg:order-2">
+          <span class="font-label text-xs tracking-[0.5em] text-secondary uppercase mb-8 block">The Workshop</span>
+          <h2 class="font-headline text-5xl md:text-6xl text-on-surface mb-10 leading-tight">Forged in Light, <br/><span class="italic font-light">Defined by Shadow.</span></h2>
+          <div class="space-y-8 font-body text-on-surface-variant text-lg leading-relaxed">
+            <p>Our journey begins in the remote ateliers of Murano and the high-tech laboratories of Kyoto. HHM Innovation is the bridge between ancient vitreous techniques and modern structural engineering.</p>
+            <p>We don't just sell plates and glasses; we offer the vessels that carry your most intimate celebrations. Every curve is intentional, every weight is balanced for the human hand.</p>
+          </div>
+          <div class="mt-12 grid grid-cols-2 gap-8">
+            <div>
+              <div class="text-3xl font-headline text-secondary mb-2">1200°C</div>
+              <div class="font-label text-xs uppercase tracking-widest">Precision Firing</div>
+            </div>
+            <div>
+              <div class="text-3xl font-headline text-secondary mb-2">Hand-Cut</div>
+              <div class="font-label text-xs uppercase tracking-widest">Diamond Polish</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Newsletter / CTA -->
+  <section class="py-24 px-8">
+    <div class="max-w-5xl mx-auto bg-primary text-on-primary p-12 md:p-20 text-center relative overflow-hidden rounded-sm">
+      <div class="absolute top-0 right-0 w-96 h-96 bg-white/5 -translate-y-1/2 translate-x-1/2 rounded-full blur-3xl"></div>
+      <h2 class="font-headline text-4xl md:text-5xl mb-8 relative z-10 italic font-light">Join the Collector's Circle</h2>
+      <p class="font-body text-primary-fixed-dim max-w-lg mx-auto mb-10 relative z-10">Access early releases, bespoke customization opportunities, and limited edition drops twice a year.</p>
+      <form id="newsletter-form" class="flex flex-col md:flex-row gap-4 max-w-md mx-auto relative z-10">
+        <input class="flex-1 bg-transparent border-b border-outline-variant/40 focus:border-white py-3 outline-none text-white font-label placeholder:text-stone-500 transition-all" placeholder="Email Address" type="email" required/>
+        <button type="submit" class="bg-surface-container-lowest text-primary px-8 py-3 rounded-sm font-label uppercase tracking-widest text-xs hover:bg-secondary hover:text-white transition-colors duration-300">
+          Subscribe
+        </button>
+      </form>
+    </div>
+  </section>
+</main>
+
+<!-- Footer -->
+<footer class="bg-stone-100 w-full py-12 border-t border-stone-200/10">
+  <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center px-8">
+    <div class="mb-8 md:mb-0">
+      <p class="font-label text-xs tracking-widest uppercase text-stone-600">© 2024 HHM Innovation. Refracted Luxury.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="/js/app.js"></script>
+<script src="/js/landing.js"></script>
+</body>
+</html>

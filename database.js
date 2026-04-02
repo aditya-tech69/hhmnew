@@ -18,11 +18,10 @@ async function getNextSequence(name) {
 
 const addAutoInc = (schema, name) => {
   schema.add({ id: { type: Number, unique: true } });
-  schema.pre('save', async function (next) {
+  schema.pre('save', async function () {
     if (this.isNew && this.id === undefined) {
       this.id = await getNextSequence(name);
     }
-    next();
   });
 };
 

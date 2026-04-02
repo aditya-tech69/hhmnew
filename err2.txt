@@ -1,0 +1,63 @@
+﻿[dotenv@17.3.1] injecting env (3) from .env -- tip: ≡ƒ¢í∩╕Å auth for agents: https://vestauth.com
+node : (node:4512) 
+[MONGOOSE] Warning: 
+mongoose: the `new` 
+option for 
+`findOneAndUpdate()` and 
+`findOneAndReplace()` is 
+deprecated. Use 
+`returnDocument: 
+'after'` instead.
+At line:1 char:1
++ node test-admin.js > 
+errorlog.txt 2>&1 ; type 
+errorlog.txt
++ ~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~
+    + CategoryInfo       
+       : NotSpecified:   
+  ((node:4512) [MO...f   
+ ter'` instead.:Strin    
+g) [], RemoteExcepti    
+on
+    + FullyQualifiedErro 
+   rId : NativeCommandE  
+  rror
+ 
+(Use `node 
+--trace-warnings ...` to 
+show where the warning 
+was created)
+ERROR DURING CREATION: 
+TypeError: next is not a 
+function
+    at model.<anonymous> 
+(C:\Users\adity\Downloads
+\hhm.web\database.js:25:5
+)
+    at process.processTic
+ksAndRejections (node:int
+ernal/process/task_queues
+:103:5)
+    at async 
+Kareem.execPre (C:\Users\
+adity\Downloads\hhm.web\n
+ode_modules\kareem\index.
+js:70:24)
+    at async 
+model.$__save (C:\Users\a
+dity\Downloads\hhm.web\no
+de_modules\mongoose\lib\m
+odel.js:394:5)
+    at async model.save (
+C:\Users\adity\Downloads\
+hhm.web\node_modules\mong
+oose\lib\model.js:664:5)
+    at async 
+model.create (C:\Users\ad
+ity\Downloads\hhm.web\nod
+e_modules\mongoose\lib\mo
+del.js:2751:5)
+    at async doIt (C:\Use
+rs\adity\Downloads\hhm.we
+b\test-admin.js:10:18)

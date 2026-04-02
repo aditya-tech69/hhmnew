@@ -1,0 +1,150 @@
+﻿[dotenv@17.3.1] injecting env (3) from .env -- tip: ΓÜÖ∩╕Å  enable debug logging with { debug: true }
+Seeding Database to Atlas...
+Connected to MongoDB Atlas
+node : (node:19828) 
+[MONGOOSE] Warning: 
+mongoose: the `new` 
+option for 
+`findOneAndUpdate()` and 
+`findOneAndReplace()` is 
+deprecated. Use 
+`returnDocument: 
+'after'` instead.
+At line:1 char:1
++ node force-seed.js > 
+seed-out.txt 2>&1; node 
+-e "const fs = require(' 
+...
++ ~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~
+    + CategoryInfo       
+       : NotSpecified:   
+  ((node:19828) [M...f   
+ ter'` instead.:Strin    
+g) [], RemoteExcepti    
+on
+    + FullyQualifiedErro 
+   rId : NativeCommandE  
+  rror
+ 
+(Use `node 
+--trace-warnings ...` to 
+show where the warning 
+was created)
+Updated admin credentials to adityasir
+Seeding database...
+(node:19828) [MONGOOSE] 
+Warning: mongoose: the 
+`new` option for 
+`findOneAndUpdate()` and 
+`findOneAndReplace()` is 
+deprecated. Use 
+`returnDocument: 
+'after'` instead.
+(node:19828) [MONGOOSE] 
+Warning: mongoose: the 
+`new` option for 
+`findOneAndUpdate()` and 
+`findOneAndReplace()` is 
+deprecated. Use 
+`returnDocument: 
+'after'` instead.
+(node:19828) [MONGOOSE] 
+Warning: mongoose: the 
+`new` option for 
+`findOneAndUpdate()` and 
+`findOneAndReplace()` is 
+deprecated. Use 
+`returnDocument: 
+'after'` instead.
+(node:19828) [MONGOOSE] 
+Warning: mongoose: the 
+`new` option for 
+`findOneAndUpdate()` and 
+`findOneAndReplace()` is 
+deprecated. Use 
+`returnDocument: 
+'after'` instead.
+(node:19828) [MONGOOSE] 
+Warning: mongoose: the 
+`new` option for 
+`findOneAndUpdate()` and 
+`findOneAndReplace()` is 
+deprecated. Use 
+`returnDocument: 
+'after'` instead.
+(node:19828) [MONGOOSE] 
+Warning: mongoose: the 
+`new` option for 
+`findOneAndUpdate()` and 
+`findOneAndReplace()` is 
+deprecated. Use 
+`returnDocument: 
+'after'` instead.
+(node:19828) [MONGOOSE] 
+Warning: mongoose: the 
+`new` option for 
+`findOneAndUpdate()` and 
+`findOneAndReplace()` is 
+deprecated. Use 
+`returnDocument: 
+'after'` instead.
+(node:19828) [MONGOOSE] 
+Warning: mongoose: the 
+`new` option for 
+`findOneAndUpdate()` and 
+`findOneAndReplace()` is 
+deprecated. Use 
+`returnDocument: 
+'after'` instead.
+(node:19828) [MONGOOSE] 
+Warning: mongoose: the 
+`new` option for 
+`findOneAndUpdate()` and 
+`findOneAndReplace()` is 
+deprecated. Use 
+`returnDocument: 
+'after'` instead.
+(node:19828) [MONGOOSE] 
+Warning: mongoose: the 
+`new` option for 
+`findOneAndUpdate()` and 
+`findOneAndReplace()` is 
+deprecated. Use 
+`returnDocument: 
+'after'` instead.
+(node:19828) [MONGOOSE] 
+Warning: mongoose: the 
+`new` option for 
+`findOneAndUpdate()` and 
+`findOneAndReplace()` is 
+deprecated. Use 
+`returnDocument: 
+'after'` instead.
+(node:19828) [MONGOOSE] 
+Warning: mongoose: the 
+`new` option for 
+`findOneAndUpdate()` and 
+`findOneAndReplace()` is 
+deprecated. Use 
+`returnDocument: 
+'after'` instead.
+(node:19828) [MONGOOSE] 
+Warning: mongoose: the 
+`new` option for 
+`findOneAndUpdate()` and 
+`findOneAndReplace()` is 
+deprecated. Use 
+`returnDocument: 
+'after'` instead.
+(node:19828) [MONGOOSE] 
+Warning: mongoose: the 
+`new` option for 
+`findOneAndUpdate()` and 
+`findOneAndReplace()` is 
+deprecated. Use 
+`returnDocument: 
+'after'` instead.
+Database seeded successfully!
+Seed complete... waiting 2s to flush
+Success! You can now log in.

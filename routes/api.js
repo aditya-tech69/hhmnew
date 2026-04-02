@@ -1,100 +1,110 @@
 const express = require('express');
 const router = express.Router();
-const { dbRun, dbGet, dbAll, saveDb } = require('../database');
+const { Product, CartItem, Subscriber, Order, OrderItem } = require('../database');
 
 // ==================== PRODUCTS ====================
 
-router.get('/products', (req, res) => {
+router.get('/products', async (req, res) => {
   try {
     const { category, material, search, minPrice, maxPrice, featured, sort, limit, offset } = req.query;
     
-    let query = 'SELECT * FROM products WHERE 1=1';
-    const params = [];
+    let query = {};
 
-    if (category) { query += ' AND category = ?'; params.push(category); }
-    if (material) { query += ' AND material LIKE ?'; params.push(`%${material}%`); }
+    if (category) query.category = category;
+    if (material) query.material = new RegExp(material, 'i');
     if (search) {
-      query += ' AND (name LIKE ? OR description LIKE ? OR collection LIKE ? OR material LIKE ?)';
-      params.push(`%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`);
+      const searchRegex = new RegExp(search, 'i');
+      query.$or = [
+        { name: searchRegex },
+        { description: searchRegex },
+        { collection_name: searchRegex },
+        { material: searchRegex }
+      ];
     }
-    if (minPrice) { query += ' AND price >= ?'; params.push(parseFloat(minPrice)); }
-    if (maxPrice) { query += ' AND price <= ?'; params.push(parseFloat(maxPrice)); }
-    if (featured === 'true') { query += ' AND featured = 1'; }
+    if (minPrice || maxPrice) {
+      query.price = {};
+      if (minPrice) query.price.$gte = parseFloat(minPrice);
+      if (maxPrice) query.price.$lte = parseFloat(maxPrice);
+    }
+    if (featured === 'true') {
+      query.featured = 1;
+    }
 
-    if (sort === 'price_asc') query += ' ORDER BY price ASC';
-    else if (sort === 'price_desc') query += ' ORDER BY price DESC';
-    else if (sort === 'name') query += ' ORDER BY name ASC';
-    else if (sort === 'newest') query += ' ORDER BY created_at DESC';
-    else query += ' ORDER BY featured DESC, created_at DESC';
+    let sortObj = { featured: -1, created_at: -1 };
+    if (sort === 'price_asc') sortObj = { price: 1 };
+    else if (sort === 'price_desc') sortObj = { price: -1 };
+    else if (sort === 'name') sortObj = { name: 1 };
+    else if (sort === 'newest') sortObj = { created_at: -1 };
 
     const lim = parseInt(limit) || 50;
     const off = parseInt(offset) || 0;
-    query += ` LIMIT ? OFFSET ?`;
-    params.push(lim, off);
 
-    const products = dbAll(query, params);
+    const products = await Product.find(query).sort(sortObj).skip(off).limit(lim).lean();
+    
+    // Map collection_name to collection for the frontend
+    const mappedProducts = products.map(p => ({
+      ...p,
+      collection: p.collection_name
+    }));
 
-    // Count
-    let countQuery = 'SELECT COUNT(*) as total FROM products WHERE 1=1';
-    const countParams = [];
-    if (category) { countQuery += ' AND category = ?'; countParams.push(category); }
-    if (material) { countQuery += ' AND material LIKE ?'; countParams.push(`%${material}%`); }
-    if (search) { countQuery += ' AND (name LIKE ? OR description LIKE ? OR collection LIKE ? OR material LIKE ?)'; countParams.push(`%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`); }
-    if (minPrice) { countQuery += ' AND price >= ?'; countParams.push(parseFloat(minPrice)); }
-    if (maxPrice) { countQuery += ' AND price <= ?'; countParams.push(parseFloat(maxPrice)); }
-    if (featured === 'true') { countQuery += ' AND featured = 1'; }
-
-    const total = dbGet(countQuery, countParams)?.total || 0;
-    res.json({ products, total, limit: lim, offset: off });
+    const total = await Product.countDocuments(query);
+    res.json({ products: mappedProducts, total, limit: lim, offset: off });
   } catch (err) {
     console.error('Error fetching products:', err);
     res.status(500).json({ error: 'Failed to fetch products' });
   }
 });
 
-router.get('/products/:id', (req, res) => {
+router.get('/products/:id', async (req, res) => {
   try {
-    const product = dbGet('SELECT * FROM products WHERE id = ?', [parseInt(req.params.id)]);
+    const product = await Product.findOne({ id: parseInt(req.params.id) }).lean();
     if (!product) return res.status(404).json({ error: 'Product not found' });
     
-    if (product.specs) {
+    product.collection = product.collection_name;
+
+    if (product.specs && typeof product.specs === 'string') {
       try { product.specs = JSON.parse(product.specs); } catch(e) {}
     }
 
-    const related = dbAll(
-      'SELECT * FROM products WHERE category = ? AND id != ? ORDER BY RANDOM() LIMIT 3',
-      [product.category, product.id]
-    );
+    const related = await Product.aggregate([
+      { $match: { category: product.category, id: { $ne: product.id } } },
+      { $sample: { size: 3 } }
+    ]);
+    const mappedRelated = related.map(p => ({ ...p, collection: p.collection_name }));
 
-    res.json({ product, related });
+    res.json({ product, related: mappedRelated });
   } catch (err) {
     console.error('Error fetching product:', err);
     res.status(500).json({ error: 'Failed to fetch product' });
   }
 });
 
-router.get('/featured', (req, res) => {
+router.get('/featured', async (req, res) => {
   try {
-    const products = dbAll('SELECT * FROM products WHERE featured = 1 ORDER BY created_at DESC LIMIT 6');
-    res.json(products);
+    const products = await Product.find({ featured: 1 }).sort({ created_at: -1 }).limit(6).lean();
+    const mappedProducts = products.map(p => ({ ...p, collection: p.collection_name }));
+    res.json(mappedProducts);
   } catch (err) {
     res.status(500).json({ error: 'Failed to fetch featured products' });
   }
 });
 
-router.get('/categories', (req, res) => {
+router.get('/categories', async (req, res) => {
   try {
-    const categories = dbAll('SELECT category, COUNT(*) as count FROM products GROUP BY category');
+    const categories = await Product.aggregate([
+      { $group: { _id: "$category", count: { $sum: 1 } } },
+      { $project: { category: "$_id", count: 1, _id: 0 } }
+    ]);
     res.json(categories);
   } catch (err) {
     res.status(500).json({ error: 'Failed to fetch categories' });
   }
 });
 
-router.get('/materials', (req, res) => {
+router.get('/materials', async (req, res) => {
   try {
-    const materials = dbAll('SELECT DISTINCT material FROM products ORDER BY material');
-    res.json(materials.map(m => m.material));
+    const materials = await Product.distinct('material');
+    res.json(materials.sort());
   } catch (err) {
     res.status(500).json({ error: 'Failed to fetch materials' });
   }
@@ -102,16 +112,34 @@ router.get('/materials', (req, res) => {
 
 // ==================== CART ====================
 
-router.get('/cart', (req, res) => {
+router.get('/cart', async (req, res) => {
   try {
     const sessionId = req.sessionID;
-    const items = dbAll(`
-      SELECT ci.id, ci.quantity, p.id as product_id, p.name, p.price, p.currency, p.image_url, p.stock, p.collection
-      FROM cart_items ci
-      JOIN products p ON ci.product_id = p.id
-      WHERE ci.session_id = ?
-    `, [sessionId]);
+    const cartItems = await CartItem.aggregate([
+      { $match: { session_id: sessionId } },
+      {
+        $lookup: {
+          from: 'products',
+          localField: 'product_id',
+          foreignField: 'id',
+          as: 'product'
+        }
+      },
+      { $unwind: '$product' }
+    ]);
     
+    const items = cartItems.map(ci => ({
+      id: ci.id,
+      quantity: ci.quantity,
+      product_id: ci.product_id,
+      name: ci.product.name,
+      price: ci.product.price,
+      currency: ci.product.currency,
+      image_url: ci.product.image_url,
+      stock: ci.product.stock,
+      collection: ci.product.collection_name
+    }));
+
     const total = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
     res.json({ items, total, count: items.reduce((sum, item) => sum + item.quantity, 0) });
   } catch (err) {
@@ -120,30 +148,37 @@ router.get('/cart', (req, res) => {
   }
 });
 
-router.post('/cart', (req, res) => {
+router.post('/cart', async (req, res) => {
   try {
     const sessionId = req.sessionID;
     const { productId, quantity = 1 } = req.body;
     if (!productId) return res.status(400).json({ error: 'Product ID required' });
 
-    const product = dbGet('SELECT * FROM products WHERE id = ?', [productId]);
+    const product = await Product.findOne({ id: productId });
     if (!product) return res.status(404).json({ error: 'Product not found' });
     if (product.stock < quantity) return res.status(400).json({ error: 'Insufficient stock' });
 
-    const existing = dbGet('SELECT * FROM cart_items WHERE session_id = ? AND product_id = ?', [sessionId, productId]);
+    const existing = await CartItem.findOne({ session_id: sessionId, product_id: productId });
     if (existing) {
       const newQty = existing.quantity + quantity;
       if (newQty > product.stock) return res.status(400).json({ error: 'Insufficient stock' });
-      dbRun('UPDATE cart_items SET quantity = ? WHERE id = ?', [newQty, existing.id]);
+      existing.quantity = newQty;
+      await existing.save();
     } else {
-      dbRun('INSERT INTO cart_items (session_id, product_id, quantity) VALUES (?, ?, ?)', [sessionId, productId, quantity]);
+      await CartItem.create({ session_id: sessionId, product_id: productId, quantity });
     }
-    saveDb();
 
-    const items = dbAll(`
-      SELECT ci.id, ci.quantity, p.id as product_id, p.name, p.price, p.currency, p.image_url, p.stock, p.collection
-      FROM cart_items ci JOIN products p ON ci.product_id = p.id WHERE ci.session_id = ?
-    `, [sessionId]);
+    // Return new cart
+    const cartItems = await CartItem.aggregate([
+      { $match: { session_id: sessionId } },
+      { $lookup: { from: 'products', localField: 'product_id', foreignField: 'id', as: 'product' } },
+      { $unwind: '$product' }
+    ]);
+    const items = cartItems.map(ci => ({
+      id: ci.id, quantity: ci.quantity, product_id: ci.product_id,
+      name: ci.product.name, price: ci.product.price, currency: ci.product.currency,
+      image_url: ci.product.image_url, stock: ci.product.stock, collection: ci.product.collection_name
+    }));
     const total = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
     res.json({ items, total, count: items.reduce((sum, item) => sum + item.quantity, 0), message: 'Added to cart' });
   } catch (err) {
@@ -152,20 +187,26 @@ router.post('/cart', (req, res) => {
   }
 });
 
-router.put('/cart/:id', (req, res) => {
+router.put('/cart/:id', async (req, res) => {
   try {
     const sessionId = req.sessionID;
     const { quantity } = req.body;
     if (quantity < 1) {
-      dbRun('DELETE FROM cart_items WHERE id = ? AND session_id = ?', [parseInt(req.params.id), sessionId]);
+      await CartItem.deleteOne({ id: parseInt(req.params.id), session_id: sessionId });
     } else {
-      dbRun('UPDATE cart_items SET quantity = ? WHERE id = ? AND session_id = ?', [quantity, parseInt(req.params.id), sessionId]);
+      await CartItem.updateOne({ id: parseInt(req.params.id), session_id: sessionId }, { quantity });
     }
-    saveDb();
-    const items = dbAll(`
-      SELECT ci.id, ci.quantity, p.id as product_id, p.name, p.price, p.currency, p.image_url, p.stock, p.collection
-      FROM cart_items ci JOIN products p ON ci.product_id = p.id WHERE ci.session_id = ?
-    `, [sessionId]);
+    
+    const cartItems = await CartItem.aggregate([
+      { $match: { session_id: sessionId } },
+      { $lookup: { from: 'products', localField: 'product_id', foreignField: 'id', as: 'product' } },
+      { $unwind: '$product' }
+    ]);
+    const items = cartItems.map(ci => ({
+      id: ci.id, quantity: ci.quantity, product_id: ci.product_id,
+      name: ci.product.name, price: ci.product.price, currency: ci.product.currency,
+      image_url: ci.product.image_url, stock: ci.product.stock, collection: ci.product.collection_name
+    }));
     const total = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
     res.json({ items, total, count: items.reduce((sum, item) => sum + item.quantity, 0) });
   } catch (err) {
@@ -173,15 +214,21 @@ router.put('/cart/:id', (req, res) => {
   }
 });
 
-router.delete('/cart/:id', (req, res) => {
+router.delete('/cart/:id', async (req, res) => {
   try {
     const sessionId = req.sessionID;
-    dbRun('DELETE FROM cart_items WHERE id = ? AND session_id = ?', [parseInt(req.params.id), sessionId]);
-    saveDb();
-    const items = dbAll(`
-      SELECT ci.id, ci.quantity, p.id as product_id, p.name, p.price, p.currency, p.image_url, p.stock, p.collection
-      FROM cart_items ci JOIN products p ON ci.product_id = p.id WHERE ci.session_id = ?
-    `, [sessionId]);
+    await CartItem.deleteOne({ id: parseInt(req.params.id), session_id: sessionId });
+    
+    const cartItems = await CartItem.aggregate([
+      { $match: { session_id: sessionId } },
+      { $lookup: { from: 'products', localField: 'product_id', foreignField: 'id', as: 'product' } },
+      { $unwind: '$product' }
+    ]);
+    const items = cartItems.map(ci => ({
+      id: ci.id, quantity: ci.quantity, product_id: ci.product_id,
+      name: ci.product.name, price: ci.product.price, currency: ci.product.currency,
+      image_url: ci.product.image_url, stock: ci.product.stock, collection: ci.product.collection_name
+    }));
     const total = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
     res.json({ items, total, count: items.reduce((sum, item) => sum + item.quantity, 0) });
   } catch (err) {
@@ -191,18 +238,18 @@ router.delete('/cart/:id', (req, res) => {
 
 // ==================== NEWSLETTER ====================
 
-router.post('/subscribe', (req, res) => {
+router.post('/subscribe', async (req, res) => {
   try {
     const { email } = req.body;
     if (!email || !email.includes('@')) return res.status(400).json({ error: 'Valid email required' });
     
-    const existing = dbGet('SELECT * FROM subscribers WHERE email = ?', [email]);
+    const existing = await Subscriber.findOne({ email });
     if (existing) return res.json({ message: 'Already subscribed!' });
 
-    dbRun('INSERT INTO subscribers (email) VALUES (?)', [email]);
-    saveDb();
+    await Subscriber.create({ email });
     res.json({ message: "Successfully subscribed to the Collector's Circle!" });
   } catch (err) {
+    if (err.code === 11000) return res.json({ message: 'Already subscribed!' });
     console.error('Error subscribing:', err);
     res.status(500).json({ error: 'Failed to subscribe' });
   }
@@ -210,44 +257,53 @@ router.post('/subscribe', (req, res) => {
 
 // ==================== CHECKOUT ====================
 
-router.post('/checkout', (req, res) => {
+router.post('/checkout', async (req, res) => {
   try {
     const sessionId = req.sessionID;
     const { customerName, customerEmail, customerPhone, shippingAddress } = req.body;
     if (!customerName || !customerEmail || !customerPhone) return res.status(400).json({ error: 'Name, email and phone are required' });
 
-    const cartItems = dbAll(`
-      SELECT ci.*, p.price, p.stock, p.name as product_name
-      FROM cart_items ci JOIN products p ON ci.product_id = p.id
-      WHERE ci.session_id = ?
-    `, [sessionId]);
+    const cartItems = await CartItem.aggregate([
+      { $match: { session_id: sessionId } },
+      { $lookup: { from: 'products', localField: 'product_id', foreignField: 'id', as: 'product' } },
+      { $unwind: '$product' }
+    ]);
 
     if (cartItems.length === 0) return res.status(400).json({ error: 'Cart is empty' });
 
     for (const item of cartItems) {
-      if (item.stock < item.quantity) {
-        return res.status(400).json({ error: `Insufficient stock for ${item.product_name}` });
+      if (item.product.stock < item.quantity) {
+        return res.status(400).json({ error: `Insufficient stock for ${item.product.name}` });
       }
     }
 
-    const total = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const total = cartItems.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
 
-    const orderResult = dbRun(
-      'INSERT INTO orders (customer_name, customer_email, customer_phone, shipping_address, status, total) VALUES (?, ?, ?, ?, ?, ?)',
-      [customerName, customerEmail, customerPhone || '', shippingAddress || '', 'Processing', total]
-    );
-    const orderId = orderResult.lastInsertRowid;
+    const order = await Order.create({
+      customer_name: customerName,
+      customer_email: customerEmail,
+      customer_phone: customerPhone || '',
+      shipping_address: shippingAddress || '',
+      status: 'Processing',
+      total
+    });
 
     for (const item of cartItems) {
-      dbRun('INSERT INTO order_items (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)',
-        [orderId, item.product_id, item.quantity, item.price]);
-      dbRun('UPDATE products SET stock = stock - ? WHERE id = ?', [item.quantity, item.product_id]);
+      await OrderItem.create({
+        order_id: order.id,
+        product_id: item.product_id,
+        quantity: item.quantity,
+        price: item.product.price
+      });
+      await Product.updateOne(
+        { id: item.product_id },
+        { $inc: { stock: -item.quantity } }
+      );
     }
 
-    dbRun('DELETE FROM cart_items WHERE session_id = ?', [sessionId]);
-    saveDb();
+    await CartItem.deleteMany({ session_id: sessionId });
 
-    res.json({ message: 'Order placed successfully!', orderId });
+    res.json({ message: 'Order placed successfully!', orderId: order.id });
   } catch (err) {
     console.error('Checkout error:', err);
     res.status(500).json({ error: 'Checkout failed' });

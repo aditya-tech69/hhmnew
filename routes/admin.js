@@ -1,17 +1,17 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
-const { dbRun, dbGet, dbAll, saveDb } = require('../database');
+const { Product, CartItem, Subscriber, Order, OrderItem, AdminUser } = require('../database');
 const { requireAdmin } = require('../middleware/auth');
 
 // ==================== AUTH ====================
 
-router.post('/login', (req, res) => {
+router.post('/login', async (req, res) => {
   try {
     const { username, password } = req.body;
     if (!username || !password) return res.status(400).json({ error: 'Username and password required' });
 
-    const admin = dbGet('SELECT * FROM admin_users WHERE username = ?', [username]);
+    const admin = await AdminUser.findOne({ username }).lean();
     if (!admin || !bcrypt.compareSync(password, admin.password_hash)) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
@@ -38,30 +38,56 @@ router.get('/me', requireAdmin, (req, res) => {
 
 // ==================== DASHBOARD ====================
 
-router.get('/dashboard', requireAdmin, (req, res) => {
+router.get('/dashboard', requireAdmin, async (req, res) => {
   try {
-    const totalRevenue = dbGet('SELECT COALESCE(SUM(total), 0) as revenue FROM orders')?.revenue || 0;
-    const totalOrders = dbGet('SELECT COUNT(*) as count FROM orders')?.count || 0;
-    const activeOrders = dbGet("SELECT COUNT(*) as count FROM orders WHERE status IN ('Processing', 'In Transit')")?.count || 0;
-    const processingOrders = dbGet("SELECT COUNT(*) as count FROM orders WHERE status = 'Processing'")?.count || 0;
-    const totalInventory = dbGet('SELECT COALESCE(SUM(stock), 0) as total FROM products')?.total || 0;
-    const totalProducts = dbGet('SELECT COUNT(*) as count FROM products')?.count || 0;
-    const totalSubscribers = dbGet('SELECT COUNT(*) as count FROM subscribers')?.count || 0;
+    const revenueAgg = await Order.aggregate([{ $group: { _id: null, revenue: { $sum: "$total" } } }]);
+    const totalRevenue = revenueAgg[0]?.revenue || 0;
+    
+    const totalOrders = await Order.countDocuments();
+    const activeOrders = await Order.countDocuments({ status: { $in: ['Processing', 'In Transit'] } });
+    const processingOrders = await Order.countDocuments({ status: 'Processing' });
+    
+    const totalInventoryAgg = await Product.aggregate([{ $group: { _id: null, total: { $sum: "$stock" } } }]);
+    const totalInventory = totalInventoryAgg[0]?.total || 0;
+    
+    const totalProducts = await Product.countDocuments();
+    const totalSubscribers = await Subscriber.countDocuments();
 
-    const inventoryByCategory = dbAll('SELECT category, SUM(stock) as stock, COUNT(*) as products FROM products GROUP BY category');
+    const inventoryByCategory = await Product.aggregate([
+      { $group: { _id: "$category", stock: { $sum: "$stock" }, products: { $sum: 1 } } },
+      { $project: { category: "$_id", stock: 1, products: 1, _id: 0 } }
+    ]);
 
-    const lowStockCount = dbGet('SELECT COUNT(*) as count FROM products WHERE stock < 5')?.count || 0;
+    const lowStockCount = await Product.countDocuments({ stock: { $lt: 5 } });
     const stockIntegrity = totalProducts > 0 ? Math.round(((totalProducts - lowStockCount) / totalProducts) * 100) : 100;
 
-    const recentOrders = dbAll(`
-      SELECT o.id, o.customer_name, o.customer_email, o.customer_phone, o.status, o.total, o.created_at,
-      GROUP_CONCAT(p.name, ', ') as product_names
-      FROM orders o
-      LEFT JOIN order_items oi ON o.id = oi.order_id
-      LEFT JOIN products p ON oi.product_id = p.id
-      GROUP BY o.id
-      ORDER BY o.created_at DESC LIMIT 10
-    `);
+    const recentOrdersRaw = await Order.aggregate([
+      { $sort: { created_at: -1 } },
+      { $limit: 10 },
+      { $lookup: { from: 'order_items', localField: 'id', foreignField: 'order_id', as: 'items' } },
+      { $unwind: { path: '$items', preserveNullAndEmptyArrays: true } },
+      { $lookup: { from: 'products', localField: 'items.product_id', foreignField: 'id', as: 'product_details' } },
+      { $unwind: { path: '$product_details', preserveNullAndEmptyArrays: true } },
+      { 
+        $group: { 
+          _id: "$_id", 
+          id: { $first: "$id" },
+          customer_name: { $first: "$customer_name" }, 
+          customer_email: { $first: "$customer_email" },
+          customer_phone: { $first: "$customer_phone" },
+          status: { $first: "$status" },
+          total: { $first: "$total" },
+          created_at: { $first: "$created_at" },
+          product_names: { $push: "$product_details.name" }
+        } 
+      },
+      { $sort: { created_at: -1 } }
+    ]);
+
+    const recentOrders = recentOrdersRaw.map(o => ({
+      ...o,
+      product_names: o.product_names.filter(Boolean).join(', ')
+    }));
 
     res.json({
       metrics: { totalRevenue, totalOrders, activeOrders, processingOrders, totalInventory, totalProducts, totalSubscribers, stockIntegrity },
@@ -76,61 +102,65 @@ router.get('/dashboard', requireAdmin, (req, res) => {
 
 // ==================== PRODUCT MANAGEMENT ====================
 
-router.post('/products', requireAdmin, (req, res) => {
+router.post('/products', requireAdmin, async (req, res) => {
   try {
     const { name, collection, category, material, description, price, currency, image_url, stock, featured, badge, specs, origin, capacity } = req.body;
     if (!name || !collection || !category || !material || !description || !price || !image_url) {
       return res.status(400).json({ error: 'Missing required fields' });
     }
 
-    const result = dbRun(
-      'INSERT INTO products (name, collection, category, material, description, price, currency, image_url, stock, featured, badge, specs, origin, capacity) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-      [name, collection, category, material, description, price, currency || 'USD', image_url, stock || 0, featured ? 1 : 0, badge || null, specs ? JSON.stringify(specs) : null, origin || 'Artisan Workshop', capacity || null]
-    );
-    saveDb();
-    const product = dbGet('SELECT * FROM products WHERE id = ?', [result.lastInsertRowid]);
-    res.status(201).json(product);
+    const newProduct = await Product.create({
+      name, collection_name: collection, category, material, description, price,
+      currency: currency || 'USD', image_url, stock: stock || 0,
+      featured: featured ? 1 : 0, badge: badge || null,
+      specs: specs ? JSON.stringify(specs) : null,
+      origin: origin || 'Artisan Workshop', capacity: capacity || null
+    });
+    
+    // Convert to JSON and map collection_name to collection
+    const json = newProduct.toJSON();
+    res.status(201).json(json);
   } catch (err) {
     console.error('Error creating product:', err);
     res.status(500).json({ error: 'Failed to create product' });
   }
 });
 
-router.put('/products/:id', requireAdmin, (req, res) => {
+router.put('/products/:id', requireAdmin, async (req, res) => {
   try {
     const { name, collection, category, material, description, price, currency, image_url, stock, featured, badge, specs, origin, capacity } = req.body;
-    const existing = dbGet('SELECT * FROM products WHERE id = ?', [parseInt(req.params.id)]);
+    const existing = await Product.findOne({ id: parseInt(req.params.id) });
     if (!existing) return res.status(404).json({ error: 'Product not found' });
 
-    dbRun(
-      'UPDATE products SET name=?, collection=?, category=?, material=?, description=?, price=?, currency=?, image_url=?, stock=?, featured=?, badge=?, specs=?, origin=?, capacity=?, updated_at=CURRENT_TIMESTAMP WHERE id=?',
-      [
-        name || existing.name, collection || existing.collection, category || existing.category,
-        material || existing.material, description || existing.description,
-        price !== undefined ? price : existing.price, currency || existing.currency,
-        image_url || existing.image_url, stock !== undefined ? stock : existing.stock,
-        featured !== undefined ? (featured ? 1 : 0) : existing.featured,
-        badge !== undefined ? badge : existing.badge,
-        specs ? JSON.stringify(specs) : existing.specs,
-        origin || existing.origin, capacity !== undefined ? capacity : existing.capacity,
-        parseInt(req.params.id)
-      ]
-    );
-    saveDb();
-    const product = dbGet('SELECT * FROM products WHERE id = ?', [parseInt(req.params.id)]);
-    res.json(product);
+    if (name) existing.name = name;
+    if (collection) existing.collection_name = collection;
+    if (category) existing.category = category;
+    if (material) existing.material = material;
+    if (description) existing.description = description;
+    if (price !== undefined) existing.price = price;
+    if (currency) existing.currency = currency;
+    if (image_url) existing.image_url = image_url;
+    if (stock !== undefined) existing.stock = stock;
+    if (featured !== undefined) existing.featured = featured ? 1 : 0;
+    if (badge !== undefined) existing.badge = badge;
+    if (specs) existing.specs = typeof specs === 'object' ? JSON.stringify(specs) : specs;
+    if (origin) existing.origin = origin;
+    if (capacity !== undefined) existing.capacity = capacity;
+
+    await existing.save();
+    
+    res.json(existing.toJSON());
   } catch (err) {
     console.error('Error updating product:', err);
     res.status(500).json({ error: 'Failed to update product' });
   }
 });
 
-router.delete('/products/:id', requireAdmin, (req, res) => {
+router.delete('/products/:id', requireAdmin, async (req, res) => {
   try {
-    const product = dbGet('SELECT * FROM products WHERE id = ?', [parseInt(req.params.id)]);
+    const product = await Product.findOne({ id: parseInt(req.params.id) });
     if (!product) return res.status(404).json({ error: 'Product not found' });
-    dbRun('DELETE FROM products WHERE id = ?', [parseInt(req.params.id)]);
-    saveDb();
+    await Product.deleteOne({ id: parseInt(req.params.id) });
     res.json({ message: 'Product deleted successfully' });
   } catch (err) {
     console.error('Error deleting product:', err);
@@ -140,20 +170,41 @@ router.delete('/products/:id', requireAdmin, (req, res) => {
 
 // ==================== ORDER MANAGEMENT ====================
 
-router.get('/orders', requireAdmin, (req, res) => {
+router.get('/orders', requireAdmin, async (req, res) => {
   try {
     const { status } = req.query;
-    let query = `
-      SELECT o.id, o.customer_name, o.customer_email, o.customer_phone, o.shipping_address, o.status, o.total, o.created_at,
-      GROUP_CONCAT(p.name, ', ') as product_names
-      FROM orders o
-      LEFT JOIN order_items oi ON o.id = oi.order_id
-      LEFT JOIN products p ON oi.product_id = p.id
-    `;
-    const params = [];
-    if (status) { query += ' WHERE o.status = ?'; params.push(status); }
-    query += ' GROUP BY o.id ORDER BY o.created_at DESC';
-    const orders = dbAll(query, params);
+    let matchStage = {};
+    if (status) matchStage.status = status;
+
+    const ordersRaw = await Order.aggregate([
+      { $match: matchStage },
+      { $sort: { created_at: -1 } },
+      { $lookup: { from: 'order_items', localField: 'id', foreignField: 'order_id', as: 'items' } },
+      { $unwind: { path: '$items', preserveNullAndEmptyArrays: true } },
+      { $lookup: { from: 'products', localField: 'items.product_id', foreignField: 'id', as: 'product_details' } },
+      { $unwind: { path: '$product_details', preserveNullAndEmptyArrays: true } },
+      { 
+        $group: { 
+          _id: "$_id", 
+          id: { $first: "$id" },
+          customer_name: { $first: "$customer_name" }, 
+          customer_email: { $first: "$customer_email" },
+          customer_phone: { $first: "$customer_phone" },
+          shipping_address: { $first: "$shipping_address" },
+          status: { $first: "$status" },
+          total: { $first: "$total" },
+          created_at: { $first: "$created_at" },
+          product_names: { $push: "$product_details.name" }
+        } 
+      },
+      { $sort: { created_at: -1 } }
+    ]);
+
+    const orders = ordersRaw.map(o => ({
+      ...o,
+      product_names: o.product_names.filter(Boolean).join(', ')
+    }));
+
     res.json(orders);
   } catch (err) {
     console.error('Error fetching orders:', err);
@@ -161,16 +212,17 @@ router.get('/orders', requireAdmin, (req, res) => {
   }
 });
 
-router.put('/orders/:id', requireAdmin, (req, res) => {
+router.put('/orders/:id', requireAdmin, async (req, res) => {
   try {
     const { status } = req.body;
     if (!['Processing', 'In Transit', 'Fulfilled', 'Cancelled'].includes(status)) {
       return res.status(400).json({ error: 'Invalid status' });
     }
-    dbRun('UPDATE orders SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?', [status, parseInt(req.params.id)]);
-    saveDb();
-    const order = dbGet('SELECT * FROM orders WHERE id = ?', [parseInt(req.params.id)]);
-    res.json(order);
+    const existing = await Order.findOne({ id: parseInt(req.params.id) });
+    if (!existing) return res.status(404).json({ error: 'Order not found' });
+    existing.status = status;
+    await existing.save();
+    res.json(existing.toJSON());
   } catch (err) {
     res.status(500).json({ error: 'Failed to update order' });
   }
@@ -178,9 +230,9 @@ router.put('/orders/:id', requireAdmin, (req, res) => {
 
 // ==================== SUBSCRIBERS ====================
 
-router.get('/subscribers', requireAdmin, (req, res) => {
+router.get('/subscribers', requireAdmin, async (req, res) => {
   try {
-    const subscribers = dbAll('SELECT * FROM subscribers ORDER BY created_at DESC');
+    const subscribers = await Subscriber.find().sort({ created_at: -1 }).lean();
     res.json(subscribers);
   } catch (err) {
     res.status(500).json({ error: 'Failed to fetch subscribers' });
